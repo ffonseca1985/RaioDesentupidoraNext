@@ -88,8 +88,10 @@ const QuemSomos: React.FC = () => {
                         <div className="bg-white p-8 rounded-xl shadow-lg">
                             <span className="text-sky-600 font-medium mb-2 block">Quem Somos</span>
                             <p className="text-xl font-semibold text-gray-800 mb-6">
-                                "Somos movidos pelo desafio de promover a cada dia serviços de qualidade e eficiência"
-                            </p>
+                                &quot;Somos movidos pelo desafio de promover a cada dia serviços de qualidade e eficiência&quot;
+                                </p>
+
+
 
                             <div className="space-y-8">
                                 {values.map((item, index) => (

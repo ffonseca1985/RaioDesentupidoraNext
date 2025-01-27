@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import Image from 'next/image';
 
 const HeaderApp: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
