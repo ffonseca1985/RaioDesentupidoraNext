@@ -38,42 +38,12 @@ const stats = [
 ];
 
 const serviceTypes = [
-    { 
-        title: "Caixa D'água", 
-        subtitle: "Limpeza de Caixa D'água",
-        icon: "tint",
-        description: "Limpeza e higienização completa de caixas d'água para residências e empresas. Garantimos água limpa e segura para sua família ou negócio."
-    },
-    { 
-        title: "Desentupimento", 
-        subtitle: "Desentupimento em Geral",
-        icon: "wrench",
-        description: "Serviços completos de desentupimento com equipamentos modernos e técnicos especializados. Atendimento 24 horas para emergências."
-    },
-    { 
-        title: "Pias", 
-        subtitle: "Desentupimento de Pia de Cozinha",
-        icon: "sink",
-        description: "Desentupimento de pias de cozinha e lavatórios, eliminando acúmulo de gordura e resíduos. Serviço rápido e eficiente."
-    },
-    { 
-        title: "Ralo", 
-        subtitle: "Desentupimento de Ralo",
-        icon: "filter",
-        description: "Limpeza e desobstrução de ralos em banheiros, áreas de serviço e demais ambientes. Prevenção contra transbordamentos e mau cheiro."
-    },
-    { 
-        title: "Cano", 
-        subtitle: "Desentupimento de Cano",
-        icon: "plug",
-        description: "Desentupimento de tubulações e encanamentos com equipamentos especializados. Resolução definitiva de problemas em sua rede hidráulica."
-    },
-    { 
-        title: "Saneamento Básico", 
-        subtitle: "Empresa de Saneamento",
-        icon: "recycle",
-        description: "Serviços completos de saneamento básico, incluindo limpeza de fossas, caixas de gordura e manutenção preventiva."
-    }
+    { title: "Caixa D'água", subtitle: "Limpeza de Caixa D'água", icon: "tint" },
+    { title: "Desentupimento", subtitle: "Desentupimento em Geral", icon: "wrench" },
+    { title: "Pias", subtitle: "Desentupimento de Pia de Cozinha", icon: "sink" },
+    { title: "Ralo", subtitle: "Desentupimento de Ralo", icon: "filter" },
+    { title: "Cano", subtitle: "Desentupimento de Cano", icon: "plug" },
+    { title: "Saneamento Básico", subtitle: "Empresa de Saneamento", icon: "recycle" }
 ];
 
 const NossosServicos: React.FC = () => {
@@ -216,8 +186,7 @@ const NossosServicos: React.FC = () => {
                                                  group-hover:text-sky-600 transition-colors">
                                         {service.title}
                                     </h3>
-                                    <p className="text-gray-600 mb-2 text-lg">{service.subtitle}</p>
-                                    <p className="text-gray-500 mb-6 text-sm leading-relaxed">{service.description}</p>
+                                    <p className="text-gray-600 mb-6 text-lg">{service.subtitle}</p>
                                     <div className="flex justify-start space-x-6">
                                         {['whatsapp', 'phone'].map((icon) => (
                                             <a
@@ -230,7 +199,7 @@ const NossosServicos: React.FC = () => {
                                                          hover:-translate-y-1"
                                                 aria-label={icon === 'whatsapp' ? "WhatsApp" : "Telefone"}
                                             >
-                                                <i className={`fa fa-${icon} text-2xl`}></i>
+                                                <i className={`${icon === 'whatsapp' ? 'fab' : 'fa'} fa-${icon} text-2xl`}></i>
                                             </a>
                                         ))}
                                     </div>

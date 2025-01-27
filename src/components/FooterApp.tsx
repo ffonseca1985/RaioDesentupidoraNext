@@ -25,7 +25,7 @@ const AppFooter: React.FC = () => {
                                         aria-label={social.label}
                                         className="text-slate-400 hover:text-sky-500 transform hover:scale-110 transition-all duration-300"
                                     >
-                                        <span className={`fa fa-${social.icon} text-2xl`}></span>
+                                        <i className={`fa-brands fa-${social.icon} text-2xl`}></i>
                                     </a>
                                 </li>
                             ))}

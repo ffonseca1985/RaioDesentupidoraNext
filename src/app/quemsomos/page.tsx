@@ -22,13 +22,38 @@ const values = [
 
 const QuemSomos: React.FC = () => {
     return (
-        <main>
+        <main className="bg-gradient-to-b from-gray-50 to-white">
             {/* Hero Section */}
-            <section className="relative min-h-[300px] bg-gradient-to-r from-slate-900 to-sky-900 
+            <section className="relative min-h-[400px] bg-gradient-to-br from-sky-900 via-blue-900 to-slate-900 
                               flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-black/30"></div>
+                <div className="absolute inset-0 bg-grid-white/[0.1] bg-[size:20px_20px]"></div>
+
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="text-center text-white">
+                        {/* Hero Icon */}
+                        <div className="flex items-center justify-center mb-8">
+                            <div className="relative group">
+                                {/* Glow Effect */}
+                                <div className="absolute inset-0 bg-blue-500 rounded-full blur-xl opacity-50 
+                                              group-hover:opacity-75 transition-opacity duration-300"></div>
+                                {/* Icon Container */}
+                                <div className="relative flex items-center justify-center w-24 h-24
+                                              bg-gradient-to-br from-sky-500 to-blue-600 
+                                              rounded-full shadow-lg transform 
+                                              transition-all duration-300 group-hover:scale-110">
+                                    {/* Icon */}
+                                    <i className="fas fa-building-user text-4xl text-white 
+                                               group-hover:rotate-12 transform transition-all duration-300"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-center space-x-2 text-sm mb-4">
+                            <span className="text-sky-300">Conheça Nossa História</span>
+                            <i className="fas fa-chevron-right text-xs text-sky-300"></i>
+                        </div>
+
                         <h1 className="text-4xl md:text-5xl font-bold mb-8">QUEM SOMOS</h1>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <BtnWhatsApp />
