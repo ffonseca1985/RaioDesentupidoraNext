@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { Metadata } from "next";
 import { BtnWhatsApp } from "@/components/whatsApp";
 import OrcamentoGratis from "@/components/orcamentoGratis";
+import ConversionTracking from '@/components/ConversionTracking';
 
 
 
@@ -22,6 +23,7 @@ const Contact: React.FC = () => {
 
     return (
         <>
+            <ConversionTracking />
             {/* Add JSON-LD to page */}
             
             <main itemScope itemType="https://schema.org/ContactPage">

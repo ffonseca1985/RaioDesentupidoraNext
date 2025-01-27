@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import HeaderApp from "@/components/HeaderApp";
 import AppFooter from "@/components/FooterApp";
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -150,28 +151,11 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <GoogleAnalytics />
       </head>
-      <body
-        className={`
-          ${geistSans.variable} 
-          ${geistMono.variable} 
-          antialiased 
-          min-h-screen 
-          flex 
-          flex-col 
-          bg-gradient-to-b 
-          from-slate-50 
-          to-slate-100 
-          dark:from-slate-900 
-          dark:to-slate-800
-          transition-colors
-          duration-300
-        `}
-      >
-        <header className="fixed w-full z-50 shadow-lg bg-white dark:bg-slate-900">
-          <HeaderApp />
-        </header>
-        <main className="flex-grow pt-20 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
+        <HeaderApp />
+        <main className="flex-grow">
           {children}
         </main>
         <AppFooter />
