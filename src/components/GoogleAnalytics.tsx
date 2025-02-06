@@ -2,7 +2,7 @@
 
 const GTM_ID = 'GTM-WCHWRQK';
 
-const GoogleTagManager = () => (
+const GoogleTagManagerHeader = () => (
   <script
     dangerouslySetInnerHTML={{
       __html: `
@@ -20,4 +20,4 @@ const GoogleTagManager = () => (
   />
 );
 
-export default GoogleTagManager; 
+export default GoogleTagManagerHeader; 
