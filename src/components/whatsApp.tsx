@@ -30,26 +30,23 @@ export const BtnWhatsApp: FC<BtnWhatsAppProps> = ({ variant = 'default' }) => {
 };
 
 export const WhatsAppFlutuante: React.FC = () => {
-    const phoneNumber = "5511980639525";
-    const message = "Olá, gostaria de fazer um orçamento!";
-
-    const handleWhatsAppClick = () => {
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
-    };
-
     return (
         <a
             href="https://wa.me/5511980639525"
-            className="fixed bottom-10 right-10 w-16 h-16 bg-green-500 hover:bg-green-600 
-                     text-white rounded-full flex items-center justify-center text-3xl
-                     shadow-lg hover:shadow-xl transition-all duration-300 transform 
-                     hover:-translate-y-1 z-50"
+            className="fixed bottom-6 right-6 w-16 h-16 bg-green-500 
+                     rounded-full flex items-center justify-center 
+                     text-white text-3xl shadow-lg hover:bg-green-600 
+                     transition-all duration-300 transform hover:scale-110 
+                     hover:-translate-y-1 z-50 cursor-pointer"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp Flutuante"
         >
             <i className="fa-brands fa-whatsapp"></i>
+            
+            {/* Pulse Effect */}
+            <span className="absolute inline-flex h-full w-full rounded-full 
+                           bg-green-500 opacity-75 animate-ping"></span>
         </a>
     );
 };
