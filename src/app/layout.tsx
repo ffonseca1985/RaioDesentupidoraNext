@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import HeaderApp from "@/components/HeaderApp";
 import AppFooter from "@/components/FooterApp";
-import GoogleAnalytics from '@/components/GoogleAnalytics';
+import GoogleTagManager from "@/components/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -151,7 +151,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <GoogleAnalytics />
+        <GoogleTagManager />
+        
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
         <HeaderApp />
@@ -159,6 +160,17 @@ export default function RootLayout({
           {children}
         </main>
         <AppFooter />
+
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WCHWRQK"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          ></iframe>
+        </noscript>
+        {/* Main app */}
       </body>
     </html>
   );
