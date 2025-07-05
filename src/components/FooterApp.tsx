@@ -1,132 +1,268 @@
-import Link from "next/link";
+"use client"
+
+import Link from "next/link"
+import { motion } from "framer-motion"
+import { 
+  Phone, 
+  Mail, 
+  MapPin, 
+  Facebook, 
+  Instagram, 
+  Twitter,
+  Wrench,
+  Clock,
+  CreditCard,
+  Shield,
+  Award,
+  Star
+} from "lucide-react"
 
 const AppFooter: React.FC = () => {
-    return (
-        <footer className="bg-gradient-to-b from-slate-800 to-slate-900 text-white py-16 mt-12 border-t border-slate-700">
-            <div className="container mx-auto px-4">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-                    {/* About Section */}
-                    <div className="space-y-6">
-                        <h2 className="text-2xl font-bold text-sky-500">Sobre Nós</h2>
-                        <p className="text-slate-300 leading-relaxed">
-                            Raio Desentupidora - Somos movido pelo desafio de promover a cada dia serviços de qualidade e
-                            eficiência, fazendo a diferença, respeitando o consumidor, garantindo por escrito serviços
-                            de qualidade a sociedade com competência, ética, cordialidade e respeito à diversidade.
-                        </p>
-                        <ul className="flex space-x-6 mt-4">
-                            {[
-                                { icon: 'twitter', label: 'Twitter' },
-                                { icon: 'facebook', label: 'Facebook' },
-                                { icon: 'instagram', label: 'Instagram' }
-                            ].map((social) => (
-                                <li key={social.icon}>
-                                    <a 
-                                        href="https://www.facebook.com/raiodesentupidoradedetizadora/" 
-                                        aria-label={social.label}
-                                        className="text-slate-400 hover:text-sky-500 transform hover:scale-110 transition-all duration-300"
-                                    >
-                                        <i className={`fa-brands fa-${social.icon} text-2xl`}></i>
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+  const currentYear = new Date().getFullYear()
+  
+  const quickLinks = [
+    { href: "/", label: "Início" },
+    { href: "/quemsomos", label: "Quem Somos" },
+    { href: "/nossosservicos", label: "Nossos Serviços" },
+    { href: "/contato", label: "Contato" }
+  ]
+  
+  const services = [
+    "Desentupimento de Esgoto",
+    "Desentupimento de Pia",
+    "Desentupimento de Vaso",
+    "Limpeza de Caixa D'água",
+    "Desentupimento de Ralo",
+    "Limpa Fossa"
+  ]
+  
+  const paymentMethods = [
+    "Cartão de Crédito",
+    "Cartão de Débito", 
+    "Dinheiro",
+    "Pix",
+    "Parcelamos"
+  ]
 
-                    {/* Institutional Links */}
-                    <div className="space-y-6">
-                        <h2 className="text-2xl font-bold text-sky-500">Institucional</h2>
-                        <ul className="space-y-4">
-                            {[
-                                { href: "/", label: "HOME" },
-                                { href: "/quemsomos", label: "QUEM SOMOS" },
-                                { href: "/nossosservicos", label: "NOSSOS SERVIÇOS" },
-                                { href: "/contato", label: "CONTATOS" }
-                            ].map((link) => (
-                                <li key={link.href}>
-                                    <Link 
-                                        href={link.href} 
-                                        aria-label={link.label} 
-                                        className="text-slate-300 hover:text-sky-500 flex items-center group transition-colors duration-300"
-                                    >
-                                        <span className="fa fa-chevron-right mr-2 text-sky-500 group-hover:translate-x-1 transition-transform duration-300"></span>
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+  return (
+    <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-white">
+      {/* Main Footer Content */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          {/* Company Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-6"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-sky-500 to-blue-600 rounded-xl flex items-center justify-center">
+                <Wrench className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold">Raio Desentupidora</h3>
+                <p className="text-sm text-sky-400">Atendimento 24h</p>
+              </div>
+            </div>
+            
+            <p className="text-slate-300 leading-relaxed">
+              Especializada em serviços de desentupimento com qualidade e eficiência. 
+              Fazemos a diferença respeitando o consumidor e garantindo serviços de 
+              qualidade com competência, ética e cordialidade.
+            </p>
+            
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                <span className="text-sm text-slate-300">4.9/5 avaliação</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Award className="w-4 h-4 text-green-400" />
+                <span className="text-sm text-slate-300">Certificado</span>
+              </div>
+            </div>
+          </motion.div>
 
-                    {/* Contact and Payment */}
-                    <div className="space-y-8">
-                        <div className="space-y-6">
-                            <h2 className="text-2xl font-bold text-sky-500">Contato(s)</h2>
-                            <ul className="space-y-4">
-                                {[
-                                    { tel: "5511980639525", label: "(11) 98063-9525" },
-                                    { tel: "5511980639525", label: "(11) 98039-9879" }
-                                ].map((phone, index) => (
-                                    <li key={index}>
-                                        <a 
-                                            href={`tel://${phone.tel}`} 
-                                            aria-label={`Telefone ${index + 1}`} 
-                                            className="text-slate-300 hover:text-sky-500 flex items-center group transition-colors duration-300"
-                                        >
-                                            <span className="fa fa-phone mr-2 text-sky-500"></span>
-                                            Tel: {phone.label}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+          {/* Quick Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="space-y-6"
+          >
+            <h4 className="text-xl font-bold text-sky-400">Links Rápidos</h4>
+            <ul className="space-y-3">
+              {quickLinks.map((link) => (
+                <li key={link.href}>
+                  <Link 
+                    href={link.href}
+                    className="text-slate-300 hover:text-white transition-colors duration-300 flex items-center gap-2 group"
+                  >
+                    <div className="w-1 h-1 bg-sky-400 rounded-full group-hover:w-2 transition-all duration-300"></div>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
 
-                        <div className="space-y-6">
-                            <h2 className="text-2xl font-bold text-sky-500">Formas de Pagamento</h2>
-                            <ul className="space-y-4">
-                                {['Cartões', 'Cheque', 'Dinheiro', 'Deposito bancário', 'Parcelamos também!'].map((item) => (
-                                    <li key={item} className="flex items-center text-slate-300 group">
-                                        <span className="material-icons mr-2 text-sky-500 text-sm">payments</span>
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
+          {/* Services */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="space-y-6"
+          >
+            <h4 className="text-xl font-bold text-sky-400">Serviços</h4>
+            <ul className="space-y-3">
+              {services.map((service) => (
+                <li key={service} className="text-slate-300 text-sm flex items-center gap-2">
+                  <Wrench className="w-3 h-3 text-sky-400" />
+                  {service}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
 
-                    {/* Email and Address */}
-                    <div className="space-y-8">
-                        <div className="space-y-6">
-                            <h2 className="text-2xl font-bold text-sky-500">E-mail</h2>
-                            <a 
-                                href="mailto:contato@raiodesentupidora.com.br" 
-                                aria-label="Email Contato" 
-                                className="text-slate-300 hover:text-sky-500 flex items-center group transition-colors duration-300"
-                            >
-                                <span className="fa fa-envelope mr-2 text-sky-500"></span>
-                                contato@raiodesentupidora.com.br
-                            </a>
-                        </div>
-
-                        <div className="space-y-6">
-                            <h2 className="text-2xl font-bold text-sky-500">Endereço</h2>
-                            <div className="text-slate-300 space-y-2">
-                                <p className="flex items-start">
-                                    <span className="fa fa-map-marker mr-2 text-sky-500 mt-1"></span>
-                                    <span>
-                                        Rua Nobel Almeida Kuke, 485,<br />
-                                        Guarulhos - São Paulo<br />
-                                        CEP: 07084-210
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+          {/* Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="space-y-6"
+          >
+            <h4 className="text-xl font-bold text-sky-400">Contato</h4>
+            
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <Phone className="w-5 h-5 text-sky-400 mt-0.5" />
+                <div>
+                  <p className="text-slate-300 font-medium">Telefones</p>
+                  <a href="tel:+5511980639525" className="text-white hover:text-sky-400 transition-colors">
+                    (11) 98063-9525
+                  </a>
+                  <br />
+                  <a href="tel:+5511980399879" className="text-white hover:text-sky-400 transition-colors">
+                    (11) 98039-9879
+                  </a>
                 </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <Mail className="w-5 h-5 text-sky-400 mt-0.5" />
+                <div>
+                  <p className="text-slate-300 font-medium">Email</p>
+                  <a href="mailto:contato@raiodesentupidora.com.br" className="text-white hover:text-sky-400 transition-colors">
+                    contato@raiodesentupidora.com.br
+                  </a>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-sky-400 mt-0.5" />
+                <div>
+                  <p className="text-slate-300 font-medium">Endereço</p>
+                  <p className="text-white">
+                    Rua Nobel Almeida Kuke, 485<br />
+                    Guarulhos - SP, 07084-210
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <Clock className="w-5 h-5 text-sky-400 mt-0.5" />
+                <div>
+                  <p className="text-slate-300 font-medium">Horário</p>
+                  <p className="text-white">24 horas por dia</p>
+                  <p className="text-sky-400 text-sm">Atendimento emergencial</p>
+                </div>
+              </div>
             </div>
-            <div className="border-t border-slate-700 mt-12 pt-8 text-center text-slate-400">
-                <p>&copy; {new Date().getFullYear()} Raio Desentupidora. Todos os direitos reservados.</p>
+          </motion.div>
+        </div>
+        
+        {/* Payment Methods & Social */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-16 pt-8 border-t border-slate-700 dark:border-slate-600"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Payment Methods */}
+            <div>
+              <h4 className="text-lg font-semibold text-sky-400 mb-4 flex items-center gap-2">
+                <CreditCard className="w-5 h-5" />
+                Formas de Pagamento
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {paymentMethods.map((method) => (
+                  <span key={method} className="bg-slate-800 dark:bg-slate-700 px-3 py-1 rounded-full text-sm text-slate-300">
+                    {method}
+                  </span>
+                ))}
+              </div>
             </div>
-        </footer>
-    );
+            
+            {/* Social Media */}
+            <div>
+              <h4 className="text-lg font-semibold text-sky-400 mb-4">Redes Sociais</h4>
+              <div className="flex gap-4">
+                <a 
+                  href="https://www.facebook.com/raiodesentupidoradedetizadora/" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-slate-800 dark:bg-slate-700 rounded-full flex items-center justify-center hover:bg-sky-600 transition-colors duration-300"
+                >
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a 
+                  href="https://www.instagram.com/raiodesentupidora/" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-slate-800 dark:bg-slate-700 rounded-full flex items-center justify-center hover:bg-sky-600 transition-colors duration-300"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a 
+                  href="https://wa.me/5511980639525" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center hover:bg-green-700 transition-colors duration-300"
+                >
+                  <Phone className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+      
+      {/* Bottom Bar */}
+      <div className="border-t border-slate-700 dark:border-slate-600 py-6">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-6">
+              <p className="text-slate-400 text-sm">
+                &copy; {currentYear} Raio Desentupidora. Todos os direitos reservados.
+              </p>
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-green-400" />
+                <span className="text-sm text-slate-400">Site Seguro</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-4 text-sm text-slate-400">
+              <span>Desenvolvido com</span>
+              <span className="text-red-400">♥</span>
+              <span>para melhor atendimento</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
 }
 
-export default AppFooter; 
+export default AppFooter 

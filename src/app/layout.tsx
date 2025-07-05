@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import HeaderApp from "@/components/HeaderApp";
+import HeaderModern from "@/components/HeaderModern";
 import AppFooter from "@/components/FooterApp";
 import GoogleTagManagerHeader from "@/components/GoogleAnalytics";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -182,11 +183,13 @@ export default function RootLayout({
         
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
-        <HeaderApp />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <AppFooter />
+        <ThemeProvider>
+          <HeaderModern />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <AppFooter />
+        </ThemeProvider>
 
         {/* Google Tag Manager (noscript) */}
         <noscript>

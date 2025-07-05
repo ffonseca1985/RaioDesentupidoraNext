@@ -1,36 +1,203 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Raio Desentupidora - Site Moderno e Futurista
 
-## Getting Started
+Um site profissional e moderno para a empresa Raio Desentupidora, especializada em serviços de desentupimento 24h em São Paulo e região.
 
-First, run the development server:
+## ✨ Características Principais
 
+### 🎨 Design Moderno e Futurista
+- **Interface clean e profissional** com inspiração tech/futurista
+- **Dark mode completo** com alternância automática/manual
+- **Glassmorphism** e efeitos visuais modernos
+- **Animações suaves** com Framer Motion
+- **Gradientes e efeitos de luz** para visual impactante
+
+### 📱 Responsividade Completa
+- Design adaptável para todos os dispositivos
+- Mobile-first approach
+- Componentes otimizados para diferentes telas
+- Menu mobile moderno com animações
+
+### 🔧 Funcionalidades Avançadas
+- **Formulário de contato inteligente** com integração WhatsApp
+- **Seção de depoimentos** com avaliações em estrelas
+- **Área de atuação** com cidades e regiões
+- **Serviços detalhados** com preços e características
+- **WhatsApp flutuante** sempre visível
+- **Scroll suave** entre seções
+
+## 🛠️ Tecnologias Utilizadas
+
+### Frontend
+- **Next.js 15** - Framework React com SSR
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Framework CSS utilitário
+- **Framer Motion** - Animações e transições
+- **Lucide React** - Ícones modernos
+
+### Bibliotecas Auxiliares
+- **clsx & tailwind-merge** - Gerenciamento de classes CSS
+- **react-intersection-observer** - Detecção de scroll
+- **react-hook-form** - Formulários otimizados
+
+## 🎯 SEO e Performance
+
+### Otimização SEO
+- **Meta tags** otimizadas para desentupidora
+- **Estrutura semântica** HTML5
+- **Schema.org** JSON-LD para rich snippets
+- **URLs amigáveis** e estrutura de links internos
+- **Open Graph** e Twitter Cards
+
+### Performance
+- **Next.js Image** otimização automática de imagens
+- **Lazy loading** componentes e imagens
+- **Code splitting** automático
+- **Fonts otimizadas** com Geist Sans/Mono
+
+## 📋 Seções do Site
+
+### 🏠 Header Moderno
+- Logo com animação
+- Menu de navegação responsivo
+- Toggle dark/light mode
+- Botões de contato direto
+- WhatsApp flutuante
+
+### 🌟 Hero Section
+- Banner principal impactante
+- CTAs claros (Ligar, WhatsApp, Orçamento)
+- Características principais destacadas
+- Animações de entrada suaves
+
+### 🔧 Seções de Serviços
+- **Serviços principais** com preços e características
+- **Tipos de atendimento** (Residencial, Comercial, Industrial)
+- **Tecnologias utilizadas** (Câmeras HD, Hidrojato, etc.)
+
+### 💬 Depoimentos
+- **6 depoimentos reais** de clientes
+- **Sistema de estrelas** para avaliação
+- **Localização dos clientes**
+- **Estatísticas** (10K+ clientes, 24h atendimento, etc.)
+
+### 🗺️ Área de Atuação
+- **Mapa visual** da região atendida
+- **Lista de cidades** com animações
+- **Regiões especializadas** (Zona Norte, Leste, Grande SP)
+- **Informações de tempo** de resposta
+
+### 📞 Formulário de Contato
+- **Formulário inteligente** com validação
+- **Integração WhatsApp** automática
+- **Níveis de urgência** (Normal, Urgente, Emergência)
+- **Informações de contato** completas
+
+### 📊 Footer Completo
+- **Informações da empresa** com avaliações
+- **Links rápidos** organizados
+- **Serviços listados** com ícones
+- **Formas de pagamento** modernizadas
+- **Redes sociais** com ícones modernos
+
+## 🚀 Como Executar
+
+### Pré-requisitos
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Node.js 18+ 
+npm ou yarn
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Instalação
+```bash
+# Clone o repositório
+git clone [url-do-repositorio]
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Entre no diretório
+cd RaioDesentupidoraNext
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Instale as dependências
+npm install
 
-## Learn More
+# Execute em modo de desenvolvimento
+npm run dev
 
-To learn more about Next.js, take a look at the following resources:
+# Acesse http://localhost:3000
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Build para Produção
+```bash
+# Gerar build otimizado
+npm run build
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Executar em produção
+npm start
+```
 
-## Deploy on Vercel
+## 🎨 Customização
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Cores Principais
+- **Sky Blue** (#0ea5e9) - Cor primária
+- **Slate** (#64748b) - Cor neutra
+- **Green** (#10b981) - WhatsApp/Sucesso
+- **Gradientes** para efeitos visuais
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Tipografia
+- **Geist Sans** - Fonte principal
+- **Geist Mono** - Fonte monoespaçada
+- Hierarquia visual clara com tamanhos responsivos
+
+### Animações
+- **Entrada suave** dos elementos
+- **Hover effects** interativos
+- **Scroll triggered** animations
+- **Floating elements** no background
+
+## 📈 Otimizações SEO
+
+### Palavras-chave Alvo
+- Desentupidora em São Paulo
+- Desentupimento 24 horas
+- Serviço emergencial desentupimento
+- Limpeza de caixa d'água
+- Desentupimento Guarulhos
+
+### Estrutura de URLs
+```
+/ - Página inicial
+/quemsomos - Sobre a empresa
+/nossosservicos - Lista de serviços
+/contato - Página de contato
+```
+
+## 🔧 Manutenção
+
+### Atualizações Regulares
+- Depoimentos de clientes
+- Preços dos serviços
+- Área de atuação
+- Informações de contato
+
+### Monitoramento
+- Google Analytics configurado
+- Google Tag Manager implementado
+- Conversões WhatsApp/Telefone trackadas
+
+## 📞 Contato da Empresa
+
+- **Telefone**: (11) 98063-9525 / (11) 98039-9879
+- **WhatsApp**: https://wa.me/5511980639525
+- **Email**: contato@raiodesentupidora.com.br
+- **Endereço**: Rua Nobel Almeida Kuke, 485 - Guarulhos/SP
+
+## 🏆 Diferenciais Técnicos
+
+- **100% TypeScript** para maior confiabilidade
+- **Componentes reutilizáveis** e escaláveis
+- **Dark mode nativo** com persistência
+- **Performance otimizada** para carregamento rápido
+- **Acessibilidade** (WCAG guidelines)
+- **SEO técnico** avançado implementado
+
+---
+
+*Desenvolvido com ❤️ para proporcionar a melhor experiência do usuário e maximizar conversões.*
