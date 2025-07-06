@@ -20,6 +20,7 @@ import Services from '@/components/sections/Services'
 import Testimonials from '@/components/sections/Testimonials'
 import ServiceArea from '@/components/sections/ServiceArea'
 import ContactForm from '@/components/sections/ContactForm'
+import FAQ from '@/components/sections/FAQ'
 
 const heroFeatures = [
   {
@@ -259,6 +260,9 @@ export default function Home() {
 
       {/* Service Area Section */}
       <ServiceArea />
+
+      {/* FAQ Section */}
+      <FAQ />
 
       {/* Contact Form Section */}
       <ContactForm />

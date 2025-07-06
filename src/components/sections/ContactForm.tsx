@@ -121,40 +121,40 @@ Aguardo retorno!
   }
 
   return (
-    <section id="contato" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800">
-      <div className="container mx-auto px-4">
+    <section id="contato" className="py-12 sm:py-20 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800">
+      <div className="container mx-auto mobile-container">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
+          <h2 className="mobile-heading font-bold text-slate-900 dark:text-white mb-4 sm:mb-6">
             Entre em Contato
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+          <p className="mobile-text text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
             Solicite seu orçamento gratuito e receba atendimento personalizado
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
           {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <Card variant="elevated">
+            <Card variant="elevated" className="mobile-card">
               <CardHeader>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
                   Solicite seu Orçamento
                 </h3>
-                <p className="text-slate-600 dark:text-slate-300">
+                <p className="mobile-text text-slate-600 dark:text-slate-300">
                   Preencha o formulário e entraremos em contato rapidamente
                 </p>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="mobile-spacing no-zoom">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                       Nome Completo *
@@ -166,8 +166,9 @@ Aguardo retorno!
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent dark:bg-slate-800 dark:text-white"
+                      className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent dark:bg-slate-800 dark:text-white text-base touch-target"
                       placeholder="Seu nome completo"
+                      autoComplete="name"
                     />
                   </div>
 
@@ -183,8 +184,9 @@ Aguardo retorno!
                         value={formData.phone}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent dark:bg-slate-800 dark:text-white"
+                        className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent dark:bg-slate-800 dark:text-white text-base touch-target"
                         placeholder="(11) 99999-9999"
+                        autoComplete="tel"
                       />
                     </div>
                     <div>
@@ -197,8 +199,9 @@ Aguardo retorno!
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent dark:bg-slate-800 dark:text-white"
+                        className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent dark:bg-slate-800 dark:text-white text-base touch-target"
                         placeholder="seu@email.com"
+                        autoComplete="email"
                       />
                     </div>
                   </div>

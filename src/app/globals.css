@@ -24,10 +24,25 @@ body {
   /* Dark mode support */
   html {
     @apply scroll-smooth;
+    /* Prevent zoom on iOS */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
   }
   
   html.dark {
     @apply bg-slate-900 text-white;
+  }
+  
+  /* Mobile optimizations */
+  body {
+    /* Prevent horizontal scroll */
+    overflow-x: hidden;
+    /* Optimize touch scrolling */
+    -webkit-overflow-scrolling: touch;
+    /* Prevent pull-to-refresh */
+    overscroll-behavior: none;
+    /* Optimize touch events */
+    touch-action: manipulation;
   }
   
   /* Custom scrollbar */
@@ -45,6 +60,32 @@ body {
   
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-slate-400 dark:bg-slate-500;
+  }
+  
+  /* Mobile-specific styles */
+  @media (max-width: 768px) {
+    /* Hide scrollbar on mobile */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    
+    /* Optimize tap targets */
+    button, a, input, textarea, select {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    /* Prevent text selection on mobile */
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+    
+    /* Allow text selection only for content */
+    p, span, div[contenteditable], textarea, input {
+      -webkit-user-select: text;
+      user-select: text;
+    }
   }
 }
 
@@ -78,6 +119,57 @@ body {
   .focus-visible {
     @apply focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:outline-none;
   }
+  
+  /* Mobile-first components */
+  .mobile-container {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  
+  .mobile-text {
+    @apply text-sm sm:text-base lg:text-lg;
+  }
+  
+  .mobile-heading {
+    @apply text-2xl sm:text-3xl lg:text-4xl;
+  }
+  
+  .mobile-button {
+    @apply px-4 py-3 sm:px-6 sm:py-4 text-sm sm:text-base;
+    /* Ensure minimum touch target */
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Touch-friendly interactions */
+  .touch-target {
+    @apply relative;
+    /* Expand touch area */
+    &::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      z-index: -1;
+    }
+  }
+  
+  /* Mobile-optimized cards */
+  .mobile-card {
+    @apply p-4 sm:p-6 lg:p-8;
+    /* Prevent content from being cut off */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Sticky mobile header */
+  .mobile-header {
+    @apply sticky top-0 z-50;
+    /* Backdrop blur for better readability */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
 
 @layer utilities {
@@ -100,6 +192,25 @@ body {
     to { box-shadow: 0 0 30px rgba(14, 165, 233, 0.4); }
   }
   
+  /* Mobile-specific animations */
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
   /* Text shadow utilities */
   .text-shadow {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -107,5 +218,56 @@ body {
   
   .text-shadow-lg {
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Mobile-specific utilities */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-area-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .safe-area-right {
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  /* Prevent zoom on input focus */
+  .no-zoom input, .no-zoom textarea, .no-zoom select {
+    font-size: 16px !important;
+  }
+  
+  /* Mobile-friendly spacing */
+  .mobile-spacing {
+    @apply space-y-4 sm:space-y-6 lg:space-y-8;
+  }
+  
+  /* Responsive grid */
+  .mobile-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8;
+  }
+}
+
+/* Performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
 }
