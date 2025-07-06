@@ -8,17 +8,23 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import WebVitals from "@/components/WebVitals";
 import MobileOptimizations from "@/components/MobileOptimizations";
+import PerformanceOptimizer from "@/components/PerformanceOptimizer";
 
+// Optimized font loading
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: 'swap',
+  preload: false,
+  fallback: ['ui-monospace', 'monospace'],
 });
 
 // Default metadata
@@ -278,24 +284,31 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="format-detection" content="telephone=no" />
         
+        {/* Critical resource hints for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+        
+        {/* DNS prefetch for performance */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        <link rel="dns-prefetch" href="//www.google-analytics.com" />
+        <link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
+        <link rel="dns-prefetch" href="//api.whatsapp.com" />
+        
+        {/* Preload critical resources */}
+        <link rel="preload" href="/favicon.ico" as="image" type="image/x-icon" />
+        <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" />
+        
         {/* Icons and PWA */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         
-        {/* Preconnect to external resources */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-        
-        {/* DNS prefetch for performance */}
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        <link rel="dns-prefetch" href="//www.google-analytics.com" />
-        
-        {/* External CSS with performance optimization */}
+        {/* Optimized external CSS loading */}
         <link 
           rel="stylesheet" 
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
@@ -308,48 +321,135 @@ export default function RootLayout({
         {/* JSON-LD Enhanced */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        
-        {/* Google Tag Manager */}
-        <script
           dangerouslySetInnerHTML={{
-            __html: `
-              (function(w,d,s,l,i){
-                w[l]=w[l]||[];
-                w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
-                var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-                j.async=true;
-                j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-                f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-WCHWRQK');
-            `,
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://www.raiodesentupidora.com.br/#organization",
+                  "name": "Raio Desentupidora",
+                  "url": "https://www.raiodesentupidora.com.br",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.raiodesentupidora.com.br/logo.png",
+                    "width": 512,
+                    "height": 512
+                  },
+                  "contactPoint": [
+                    {
+                      "@type": "ContactPoint",
+                      "telephone": "+55-11-98063-9525",
+                      "contactType": "emergency",
+                      "availableLanguage": "Portuguese",
+                      "hoursAvailable": {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": [
+                          "Monday", "Tuesday", "Wednesday", "Thursday", 
+                          "Friday", "Saturday", "Sunday"
+                        ],
+                        "opens": "00:00",
+                        "closes": "23:59"
+                      }
+                    }
+                  ],
+                  "sameAs": [
+                    "https://www.facebook.com/raiodesentupidora",
+                    "https://www.instagram.com/raiodesentupidora"
+                  ]
+                },
+                {
+                  "@type": "LocalBusiness",
+                  "@id": "https://www.raiodesentupidora.com.br/#localbusiness",
+                  "name": "Raio Desentupidora",
+                  "description": "Empresa especializada em desentupimento 24h, limpeza de caixa d'água e serviços hidráulicos em Guarulhos e região metropolitana de São Paulo.",
+                  "url": "https://www.raiodesentupidora.com.br",
+                  "telephone": "+55-11-98063-9525",
+                  "priceRange": "$$",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Guarulhos",
+                    "addressRegion": "SP",
+                    "addressCountry": "BR"
+                  },
+                  "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": -23.4538,
+                    "longitude": -46.5333
+                  },
+                  "openingHours": "Mo-Su 00:00-23:59",
+                  "serviceArea": {
+                    "@type": "GeoCircle",
+                    "geoMidpoint": {
+                      "@type": "GeoCoordinates",
+                      "latitude": -23.4538,
+                      "longitude": -46.5333
+                    },
+                    "geoRadius": "50000"
+                  },
+                  "hasOfferCatalog": {
+                    "@type": "OfferCatalog",
+                    "name": "Serviços de Desentupimento",
+                    "itemListElement": [
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
+                          "name": "Desentupimento de Esgoto",
+                          "description": "Serviço de desentupimento de esgoto com equipamentos especializados"
+                        }
+                      },
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
+                          "name": "Limpeza de Caixa d'Água",
+                          "description": "Limpeza e higienização completa de caixa d'água"
+                        }
+                      },
+                      {
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Service",
+                          "name": "Desentupimento de Pia",
+                          "description": "Desentupimento de pias de cozinha e banheiro"
+                        }
+                      }
+                    ]
+                  },
+                  "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "4.9",
+                    "reviewCount": "127",
+                    "bestRating": "5"
+                  }
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://www.raiodesentupidora.com.br/#website",
+                  "url": "https://www.raiodesentupidora.com.br",
+                  "name": "Raio Desentupidora",
+                  "description": "Desentupidora 24h em Guarulhos e região metropolitana de São Paulo",
+                  "publisher": {
+                    "@id": "https://www.raiodesentupidora.com.br/#organization"
+                  },
+                  "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://www.raiodesentupidora.com.br/search?q={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                  }
+                }
+              ]
+            })
           }}
         />
-
-        {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11562746309"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){window.dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'AW-11562746309', {
-                page_title: document.title,
-                page_location: window.location.href,
-                custom_map: {'custom_parameter': 'desentupimento'}
-              });
-            `
-          }}
-        />
-        
       </head>
+      
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
         <ThemeProvider>
           <WebVitals />
           <MobileOptimizations />
+          <PerformanceOptimizer />
           <HeaderModern />
           <Breadcrumbs />
           <main className="flex-grow">

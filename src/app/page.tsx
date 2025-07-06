@@ -69,7 +69,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 dark:from-slate-950 dark:via-blue-950 dark:to-slate-950">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 dark:from-slate-950 dark:via-blue-950 dark:to-slate-950 heavy-section optimize-animation">
         {/* Animated background grid */}
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:50px_50px] animate-pulse"></div>
         
@@ -180,7 +180,7 @@ export default function Home() {
       <Services />
 
       {/* Why Choose Us Section */}
-      <section className="py-20 bg-white dark:bg-slate-900">
+      <section className="py-20 bg-white dark:bg-slate-900 heavy-section reduce-paint">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
