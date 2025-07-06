@@ -9,6 +9,9 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import WebVitals from "@/components/WebVitals";
 import MobileOptimizations from "@/components/MobileOptimizations";
 import PerformanceOptimizer from "@/components/PerformanceOptimizer";
+// Chat temporariamente desabilitado - para usar no futuro
+// import { ChatProvider } from '@/components/Chat/ChatProvider'
+// import ChatWidget from '@/components/Chat/ChatWidget'
 
 // Optimized font loading
 const geistSans = Geist({
@@ -447,15 +450,19 @@ export default function RootLayout({
       
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
         <ThemeProvider>
-          <WebVitals />
-          <MobileOptimizations />
-          <PerformanceOptimizer />
-          <HeaderModern />
-          <Breadcrumbs />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <AppFooter />
+          {/* Chat temporariamente desabilitado - para usar no futuro */}
+          {/* <ChatProvider> */}
+            <WebVitals />
+            <MobileOptimizations />
+            <PerformanceOptimizer />
+            <HeaderModern />
+            <Breadcrumbs />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <AppFooter />
+            {/* <ChatWidget /> */}
+          {/* </ChatProvider> */}
         </ThemeProvider>
 
         {/* Google Tag Manager (noscript) */}

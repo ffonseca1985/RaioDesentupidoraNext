@@ -299,7 +299,7 @@ export default function HeaderModern() {
         initial={{ scale: 0, rotate: -180 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ delay: 1, duration: 0.5, type: "spring", stiffness: 200 }}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 safe-area-bottom safe-area-right"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 md:right-20 z-40 safe-area-bottom safe-area-right"
       >
         <a
           href="https://wa.me/5511980639525"

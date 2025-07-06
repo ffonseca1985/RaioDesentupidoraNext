@@ -1,6 +1,6 @@
-# 🚀 Raio Desentupidora - Site Moderno e Futurista
+# 🚀 Raio Desentupidora - Site Moderno com Chat Integrado
 
-Um site profissional e moderno para a empresa Raio Desentupidora, especializada em serviços de desentupimento 24h em São Paulo e região.
+Um site profissional e moderno para a empresa Raio Desentupidora, especializada em serviços de desentupimento 24h em São Paulo e região, agora com sistema de chat integrado ao n8n.
 
 ## ✨ Características Principais
 
@@ -25,6 +25,15 @@ Um site profissional e moderno para a empresa Raio Desentupidora, especializada 
 - **WhatsApp flutuante** sempre visível
 - **Scroll suave** entre seções
 
+### 💬 Sistema de Chat Integrado
+- **Widget de chat responsivo** com design moderno
+- **Integração n8n** via webhook para automação
+- **Respostas automáticas** configuráveis
+- **Painel administrativo** completo
+- **Analytics e métricas** detalhadas
+- **Horário comercial** automático
+- **Upload de arquivos** e botões de ação rápida
+
 ## 🛠️ Tecnologias Utilizadas
 
 ### Frontend
@@ -38,6 +47,12 @@ Um site profissional e moderno para a empresa Raio Desentupidora, especializada 
 - **clsx & tailwind-merge** - Gerenciamento de classes CSS
 - **react-intersection-observer** - Detecção de scroll
 - **react-hook-form** - Formulários otimizados
+
+### Integração Chat
+- **n8n Webhook** - Automação de mensagens
+- **Context API** - Gerenciamento de estado do chat
+- **LocalStorage** - Persistência de conversas
+- **Framer Motion** - Animações do chat
 
 ## 🎯 SEO e Performance
 
