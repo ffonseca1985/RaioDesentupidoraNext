@@ -287,6 +287,9 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="format-detection" content="telephone=no" />
         
+        {/* Google Tag Manager */}
+        <GoogleTagManagerHeader />
+        
         {/* Critical resource hints for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
