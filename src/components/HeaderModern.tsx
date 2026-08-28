@@ -286,6 +286,10 @@ export default function HeaderModern() {
           id={MENU_ID}
           inert={!isMenuOpen}
           className={cn(
+            // `absolute top-full` é obrigatório: como filho em fluxo, o painel
+            // entrava na altura do <header>, que é fixed e pintado — o fundo
+            // da barra cobria ~500px do hero mesmo com o menu fechado.
+            'absolute inset-x-0 top-full origin-top',
             'max-h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t border-hairline bg-canvas shadow-e3 lg:hidden',
             'transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none',
             isMenuOpen

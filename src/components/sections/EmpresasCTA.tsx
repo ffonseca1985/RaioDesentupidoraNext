@@ -44,7 +44,7 @@ export default function EmpresasCTA() {
             <span>Cotação por e-mail e envio de documentação:</span>
             <a
               href={`mailto:${site.email}?subject=${encodeURIComponent('Contrato de manutenção preventiva')}`}
-              className="font-medium text-white/80 underline underline-offset-4 transition-colors hover:text-raio-400"
+              className="inline-flex min-h-11 items-center break-all font-medium text-white/80 underline underline-offset-4 transition-colors hover:text-raio-400"
             >
               {site.email}
             </a>

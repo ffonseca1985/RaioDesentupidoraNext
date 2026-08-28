@@ -61,7 +61,7 @@ export default function Contato() {
             E-mail:{" "}
             <a
               href={`mailto:${site.email}`}
-              className="underline decoration-white/30 underline-offset-4 hover:text-white"
+              className="py-2 underline decoration-white/30 underline-offset-4 hover:text-white"
             >
               {site.email}
             </a>

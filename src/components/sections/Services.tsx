@@ -284,7 +284,7 @@ export default function Services({ variant = 'section' }: ServicesProps) {
             Emergência residencial agora?{' '}
             <a
               href={site.phone.tel}
-              className="nums font-semibold text-raio-600 underline-offset-4 hover:underline dark:text-raio-400"
+              className="nums py-2 font-semibold text-raio-600 underline-offset-4 hover:underline dark:text-raio-400"
             >
               {site.phone.display}
             </a>{' '}

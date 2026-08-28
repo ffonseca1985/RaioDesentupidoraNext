@@ -86,6 +86,17 @@
     ::-webkit-scrollbar { display: none; }
     * { -webkit-tap-highlight-color: transparent; }
     button, a[role="button"], input, textarea, select { min-height: 44px; }
+
+    /* Links de navegação e de contato precisam de alvo de toque real. O alvo é
+       só o que vive em lista de navegação: um min-height global em <a> criaria
+       buracos em links inline no meio de parágrafos. O telefone do rodapé tinha
+       18px de altura — num site que vende por ligação, é o pior lugar para errar. */
+    footer li a,
+    nav li a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
   }
 
   /* Honour the OS setting — motion is decoration, never information */

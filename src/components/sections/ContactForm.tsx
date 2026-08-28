@@ -232,7 +232,7 @@ export default function ContactForm() {
                   <dd>
                     <a
                       href={`mailto:${site.email}`}
-                      className="break-all text-white/60 underline-offset-4 hover:text-white hover:underline focus-visible:ring-offset-ink-950"
+                      className="inline-flex min-h-11 items-center break-all text-white/60 underline-offset-4 hover:text-white hover:underline focus-visible:ring-offset-ink-950"
                     >
                       {site.email}
                     </a>

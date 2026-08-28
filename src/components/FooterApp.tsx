@@ -40,7 +40,7 @@ const areaAtendimento =
   'Vila Augusta, Jardim Bela Vista e demais bairros da Grande São Paulo.'
 
 const linkClass =
-  'inline-flex min-h-[2.25rem] items-center text-sm text-white/70 transition-colors duration-200 ease-out ' +
+  'inline-flex min-h-11 items-center text-sm text-white/70 transition-colors duration-200 ease-out ' +
   'hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-raio-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950 rounded'
 
 function ColumnTitle({ children, className }: { children: React.ReactNode; className?: string }) {
