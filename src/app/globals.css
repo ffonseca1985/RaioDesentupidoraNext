@@ -2,347 +2,232 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Critical CSS - Above the fold */
+/* ============================================================
+   TOKENS
+   Semantic surfaces as raw RGB triplets so Tailwind can apply
+   opacity modifiers (bg-surface/60). Theme flips on .dark only —
+   never via prefers-color-scheme, which would fight ThemeContext.
+   ============================================================ */
 @layer base {
-  /* Optimize font loading */
-  @font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  :root {
+    --canvas: 255 255 255;
+    --surface: 248 250 252;
+    --elevated: 255 255 255;
+    --hairline: 226 232 240;
+
+    --content: 10 20 36;
+    --content-muted: 71 85 105;
+    --content-subtle: 124 139 160;
+    --content-invert: 255 255 255;
+
+    /* legacy aliases still referenced by older markup */
+    --background: #ffffff;
+    --foreground: #0a1424;
+
+    --header-h: 4rem;
   }
-  
-  /* Critical layout styles */
+
+  @media (min-width: 640px) {
+    :root { --header-h: 4.75rem; }
+  }
+
+  .dark {
+    --canvas: 7 15 28;
+    --surface: 12 22 38;
+    --elevated: 18 30 48;
+    --hairline: 32 47 70;
+
+    --content: 237 242 249;
+    --content-muted: 158 173 194;
+    --content-subtle: 118 135 159;
+    --content-invert: 10 20 36;
+
+    --background: #070f1c;
+    --foreground: #edf2f9;
+  }
+
   html {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    @apply scroll-smooth antialiased;
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+    -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
   }
-  
+
   body {
+    @apply bg-canvas text-content font-sans;
     line-height: 1.6;
-    color: var(--foreground);
-    background: var(--background);
-  }
-}
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer base {
-  /* Dark mode support */
-  html {
-    @apply scroll-smooth;
-    /* Prevent zoom on iOS */
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-  }
-  
-  html.dark {
-    @apply bg-slate-900 text-white;
-  }
-  
-  /* Mobile optimizations */
-  body {
-    /* Prevent horizontal scroll */
     overflow-x: hidden;
-    /* Optimize touch scrolling */
     -webkit-overflow-scrolling: touch;
-    /* Prevent pull-to-refresh */
-    overscroll-behavior: none;
-    /* Optimize touch events */
+    /* Elimina o atraso de 300ms no toque sem bloquear o pinch-zoom (WCAG 1.4.4). */
     touch-action: manipulation;
+    font-feature-settings: "cv02", "cv03", "cv04", "ss01";
   }
-  
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
+
+  /* Headings inherit the display treatment: tight, deliberate */
+  h1, h2, h3, h4 {
+    @apply font-semibold tracking-tight text-balance;
   }
-  
-  ::-webkit-scrollbar-track {
-    @apply bg-slate-100 dark:bg-slate-800;
+
+  /* Visible, consistent focus for keyboard users only */
+  :focus-visible {
+    @apply outline-none ring-2 ring-raio-500 ring-offset-2 ring-offset-canvas rounded-sm;
   }
-  
-  ::-webkit-scrollbar-thumb {
-    @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+
+  ::selection {
+    @apply bg-raio-300 text-ink-950;
   }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-slate-400 dark:bg-slate-500;
-  }
-  
-  /* Mobile-specific styles */
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { @apply bg-surface; }
+  ::-webkit-scrollbar-thumb { @apply bg-hairline rounded-full border-2 border-solid border-transparent bg-clip-content; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-content-subtle bg-clip-content; }
+
   @media (max-width: 768px) {
-    /* Hide scrollbar on mobile */
-    ::-webkit-scrollbar {
-      display: none;
-    }
-    
-    /* Optimize tap targets */
-    button, a, input, textarea, select {
-      min-height: 44px;
-      min-width: 44px;
-    }
-    
-    /* Prevent text selection on mobile */
-    * {
-      -webkit-tap-highlight-color: transparent;
-      -webkit-touch-callout: none;
-    }
-    
-    /* Allow text selection only for content */
-    p, span, div[contenteditable], textarea, input {
-      -webkit-user-select: text;
-      user-select: text;
+    ::-webkit-scrollbar { display: none; }
+    * { -webkit-tap-highlight-color: transparent; }
+    button, a[role="button"], input, textarea, select { min-height: 44px; }
+  }
+
+  /* Honour the OS setting — motion is decoration, never information */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
   }
 }
 
+/* ============================================================
+   COMPONENT UTILITIES
+   ============================================================ */
 @layer components {
-  /* Grid pattern for backgrounds */
-  .bg-grid-white {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  /* --- Rhythm ------------------------------------------------ */
+  .section {
+    @apply py-16 sm:py-20 lg:py-28;
   }
-  
-  .bg-grid-black {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  .section-tight {
+    @apply py-12 sm:py-16 lg:py-20;
   }
-  
-  /* Glassmorphism effect */
+
+  /* --- Editorial type ---------------------------------------- */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-eyebrow uppercase text-raio-600 dark:text-raio-400;
+  }
+  .lede {
+    @apply text-lede text-content-muted max-w-measure;
+  }
+
+  /* --- Surfaces ---------------------------------------------- */
+  .surface-card {
+    @apply bg-elevated border border-hairline rounded-2xl;
+  }
+  .hairline-t { @apply border-t border-hairline; }
+  .hairline-b { @apply border-b border-hairline; }
+
+  /* Frosted panel over the dark hero */
   .glass {
-    @apply bg-white/10 backdrop-blur-lg border border-white/20;
+    @apply bg-white/[0.06] backdrop-blur-xl border border-white/[0.12];
   }
-  
-  .glass-dark {
-    @apply bg-slate-900/10 backdrop-blur-lg border border-slate-700/20;
+  .glass-strong {
+    @apply bg-white/[0.1] backdrop-blur-2xl border border-white/[0.16];
   }
-  
-  /* Gradient text */
+
+  /* --- Decorative ground ------------------------------------- */
+  /* Blueprint grid — reads as technical, not as a 2021 hero cliché */
+  .bg-blueprint {
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .bg-blueprint-dark {
+    background-image:
+      linear-gradient(rgb(10 20 36 / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(10 20 36 / 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  /* Fades a decorative layer out toward the edges */
+  .mask-fade-edges {
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 100%);
+  }
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
   .gradient-text {
-    @apply bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-br from-raio-300 via-raio-400 to-raio-600 bg-clip-text text-transparent;
   }
-  
-  /* Custom focus styles */
-  .focus-visible {
-    @apply focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:outline-none;
+
+  /* Hairline divider with a lit centre */
+  .rule-lit {
+    @apply h-px w-full;
+    background: linear-gradient(90deg, transparent, rgb(var(--hairline)), transparent);
   }
-  
-  /* Mobile-first components */
-  .mobile-container {
-    @apply px-4 sm:px-6 lg:px-8;
+
+
+  /* --- Scroll reveal ------------------------------------------
+     Content is visible by DEFAULT. `html.js` (set by the pre-paint
+     inline boot script) is what arms the hidden state, so a slow or
+     failed JS bundle can never leave the page blank — the old
+     framer-motion `initial={{opacity:0}}` approach pushed FCP to 3.2s.
+     ---------------------------------------------------------- */
+  .reveal {
+    opacity: 1;
   }
-  
-  .mobile-text {
-    @apply text-sm sm:text-base lg:text-lg;
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(var(--reveal-y, 16px));
+    will-change: opacity, transform;
   }
-  
-  .mobile-heading {
-    @apply text-2xl sm:text-3xl lg:text-4xl;
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: auto;
   }
-  
-  .mobile-button {
-    @apply px-4 py-3 sm:px-6 sm:py-4 text-sm sm:text-base;
-    /* Ensure minimum touch target */
-    min-height: 44px;
-    min-width: 44px;
+  .reveal-none { --reveal-y: 0px; }
+
+  /* Above-the-fold entrance. Pure CSS, starts at first paint, never
+     waits on JS — keeps LCP honest. */
+  .enter {
+    animation: riseIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--enter-delay, 0ms);
   }
-  
-  /* Touch-friendly interactions */
-  .touch-target {
-    @apply relative;
-    /* Expand touch area */
-    &::before {
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: -10px;
-      right: -10px;
-      bottom: -10px;
-      z-index: -1;
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal { opacity: 1; transform: none; }
+    .enter { animation: none; }
   }
-  
-  /* Mobile-optimized cards */
-  .mobile-card {
-    @apply p-4 sm:p-6 lg:p-8;
-    /* Prevent content from being cut off */
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-  
-  /* Sticky mobile header */
-  .mobile-header {
-    @apply sticky top-0 z-50;
-    /* Backdrop blur for better readability */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
+
+  /* --- Legacy back-compat ------------------------------------ */
+  /* Older markup still ships these; keep them harmless. */
+  .bg-grid-white { @apply bg-blueprint; }
+  .bg-grid-black { @apply bg-blueprint-dark; }
+  .glass-dark { @apply glass; }
+  .mobile-container { @apply px-5 sm:px-6 lg:px-8; }
+  .mobile-card { @apply p-5 sm:p-6 lg:p-8; }
+  .mobile-header { @apply sticky top-0 z-50; }
+  .heavy-section, .reduce-paint, .optimize-animation, .touch-target { }
 }
 
 @layer utilities {
-  /* Animation utilities */
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
-  
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-  
-  .animate-glow {
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-  
-  @keyframes glow {
-    from { box-shadow: 0 0 20px rgba(14, 165, 233, 0.2); }
-    to { box-shadow: 0 0 30px rgba(14, 165, 233, 0.4); }
-  }
-  
-  /* Mobile-specific animations */
-  .animate-slide-up {
-    animation: slideUp 0.3s ease-out;
-  }
-  
-  @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  /* Text shadow utilities */
-  .text-shadow {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .text-shadow-lg {
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Mobile-specific utilities */
-  .safe-area-top {
-    padding-top: env(safe-area-inset-top);
-  }
-  
-  .safe-area-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  
-  .safe-area-left {
-    padding-left: env(safe-area-inset-left);
-  }
-  
-  .safe-area-right {
-    padding-right: env(safe-area-inset-right);
-  }
-  
-  /* Prevent zoom on input focus */
-  .no-zoom input, .no-zoom textarea, .no-zoom select {
-    font-size: 16px !important;
-  }
-  
-  /* Mobile-friendly spacing */
-  .mobile-spacing {
-    @apply space-y-4 sm:space-y-6 lg:space-y-8;
-  }
-  
-  /* Responsive grid */
-  .mobile-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8;
-  }
-}
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
 
-/* Performance optimizations */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
+  .safe-area-top { padding-top: env(safe-area-inset-top); }
+  .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
 
-/* GPU acceleration for animations */
-.animate-gpu {
-  transform: translateZ(0);
-  will-change: transform;
-}
+  /* Tabular figures keep stat rows from jittering */
+  .nums { font-variant-numeric: tabular-nums; }
 
-/* Optimize images */
-img {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 1000px;
-}
-
-/* Optimize heavy sections */
-.heavy-section {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 1000px;
-}
-
-/* Optimize scrolling */
-.scroll-container {
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f5f9;
-}
-
-/* Critical resource hints */
-.preload-hint {
-  display: none;
-}
-
-/* Optimize text rendering */
-.optimize-text {
-  text-rendering: optimizeSpeed;
-  -webkit-font-smoothing: subpixel-antialiased;
-}
-
-/* Reduce paint area */
-.reduce-paint {
-  contain: layout style paint;
-}
-
-/* Optimize animations */
-.optimize-animation {
-  animation-fill-mode: both;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
-/* Print styles */
-@media print {
-  * {
-    background: transparent !important;
-    color: black !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
+  /* Suppress hover lift on touch devices, where it just sticks */
+  @media (hover: none) {
+    .hover-lift { transform: none !important; }
   }
 }

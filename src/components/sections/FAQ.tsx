@@ -1,9 +1,15 @@
-"use client"
+import { ChevronDown } from 'lucide-react'
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, HelpCircle } from 'lucide-react'
-import { Card } from '@/components/ui/Card'
+import { Section, SectionHeading } from '@/components/ui/Section'
+import { Button } from '@/components/ui/Button'
+import Reveal from '@/components/ui/Reveal'
+import { site, waMessages } from '@/lib/site'
+
+/**
+ * Server component de propósito: `<details>`/`<summary>` nativo entrega o
+ * accordion sem uma linha de JS, é acessível por padrão e mantém a resposta no
+ * HTML — o Google indexa o texto mesmo com o item fechado.
+ */
 
 interface FAQItem {
   question: string
@@ -12,174 +18,122 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    question: "Quanto tempo demora para o atendimento de emergência?",
-    answer: "Nosso atendimento emergencial é 24h e chegamos ao local em até 1 hora após o chamado, dependendo da região. Priorizamos casos de urgência como vazamentos e entupimentos graves."
+    question: 'Quanto custa um desentupimento?',
+    answer:
+      'Depende do ponto entupido, do acesso e do método necessário. Por isso a avaliação é feita no local e sem custo: o técnico verifica o caso e apresenta um preço fechado. O serviço só começa depois que você aprova esse valor.',
   },
   {
-    question: "Quais regiões vocês atendem?",
-    answer: "Atendemos Guarulhos e toda a região metropolitana de São Paulo, incluindo Cumbica, Vila Galvão, Parque Continental, Vila Augusta, Centro de Guarulhos e cidades próximas."
+    question: 'Em quanto tempo a equipe chega?',
+    answer:
+      'O atendimento é 24 horas, todos os dias, inclusive feriados. Na Grande São Paulo trabalhamos com chegada em até 60 minutos a partir da confirmação do chamado — trânsito e distância podem alterar esse prazo, e informamos por telefone quando isso acontece.',
   },
   {
-    question: "Vocês oferecem garantia nos serviços?",
-    answer: "Sim! Oferecemos garantia de 90 dias em todos os nossos serviços de desentupimento e 6 meses na limpeza de caixa d'água. Nossa garantia cobre mão de obra e eficácia do serviço."
+    question: 'Vai ser preciso quebrar piso ou parede?',
+    answer:
+      'Na maioria dos casos, não. O desentupimento é feito pelos acessos que já existem: ralos, caixas de inspeção, caixa de gordura. Quebra só entra em cena quando a tubulação está rompida ou colapsada — e, nesse caso, mostramos o problema e apresentamos o custo antes de qualquer intervenção.',
   },
   {
-    question: "Como é feito o orçamento?",
-    answer: "O orçamento é totalmente gratuito! Nosso técnico avalia o problema no local e apresenta um preço justo e transparente. Só iniciamos o serviço após sua aprovação."
+    question: 'O serviço tem garantia?',
+    answer:
+      'Sim, garantia por escrito em todo serviço executado. O documento entregue no fim do atendimento descreve o que foi feito, o trecho atendido e o prazo de cobertura.',
   },
   {
-    question: "Quais formas de pagamento vocês aceitam?",
-    answer: "Aceitamos dinheiro, PIX, cartão de débito e crédito (até 12x), transferência bancária e boleto. Oferecemos facilidades de pagamento para melhor atender nossos clientes."
+    question: 'Vocês emitem nota fiscal?',
+    answer:
+      'Sim. Emitimos nota fiscal para pessoa física e jurídica em todos os serviços — inclusive nos atendimentos de emergência fora do horário comercial.',
   },
   {
-    question: "Vocês trabalham aos finais de semana e feriados?",
-    answer: "Sim! Nosso atendimento é 24 horas por dia, 7 dias por semana, incluindo finais de semana e feriados. Entupimentos não escolhem hora para acontecer!"
+    question: 'O que eu faço até a equipe chegar?',
+    answer:
+      'Pare de usar a rede afetada (pia, vaso, máquina) para o nível não subir. Não jogue soda cáustica nem desentupidor químico: aquece a tubulação, atrapalha o trabalho e é risco para quem está no local. Se houver refluxo, desligue bombas e isole a área.',
   },
   {
-    question: "O que está incluído no serviço de limpeza de caixa d'água?",
-    answer: "Incluímos esvaziamento completo, limpeza com produtos específicos, desinfecção, teste de qualidade da água e relatório de limpeza. Todo processo segue normas da ANVISA."
+    question: 'Atendem condomínio e empresa com contrato?',
+    answer:
+      'Sim. Além do chamado avulso, trabalhamos com manutenção programada — limpeza preventiva de caixa de gordura, ralos e prumadas em periodicidade definida, com relatório por atendimento para prestação de contas ao síndico ou ao setor de facilities.',
   },
   {
-    question: "Vocês emitem nota fiscal?",
-    answer: "Sim, emitimos nota fiscal para todos os serviços prestados. Para empresas, oferecemos condições especiais e contratos de manutenção preventiva."
-  }
+    question: 'Quais regiões vocês atendem?',
+    answer:
+      'Guarulhos, onde fica nossa base, e toda a Grande São Paulo. Se estiver na dúvida sobre o seu endereço, é mais rápido perguntar pelo WhatsApp do que preencher formulário.',
+  },
+  {
+    question: 'Como funciona o pagamento?',
+    answer:
+      /* TODO: confirmar com o cliente — formas de pagamento aceitas e parcelamento */
+      'O pagamento é feito depois do serviço concluído, sobre o valor aprovado no orçamento. Confirme as formas aceitas no momento do agendamento.',
+  },
 ]
 
+const faqStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqData.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+}
+
 export default function FAQ() {
-  const [openItems, setOpenItems] = useState<number[]>([])
-
-  const toggleItem = (index: number) => {
-    setOpenItems(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
-    )
-  }
-
-  // Structured data para FAQ
-  const faqStructuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqData.map(item => ({
-      '@type': 'Question',
-      name: item.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: item.answer
-      }
-    }))
-  }
-
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
-      
-      <section id="faq" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <div className="flex justify-center mb-6">
-              <div className="p-3 bg-sky-100 dark:bg-sky-900 rounded-full">
-                <HelpCircle className="w-8 h-8 text-sky-600 dark:text-sky-400" />
-              </div>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
-              Perguntas Frequentes
-            </h2>
-            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-              Esclarecemos as principais dúvidas sobre nossos serviços de desentupimento e limpeza
-            </p>
-          </motion.div>
 
-          <div className="max-w-4xl mx-auto space-y-4">
-            {faqData.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card 
-                  variant="bordered" 
-                  hover 
-                  className="overflow-hidden"
-                >
-                  <button
-                    onClick={() => toggleItem(index)}
-                    className="w-full p-6 text-left flex justify-between items-center hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                    aria-expanded={openItems.includes(index)}
-                    aria-controls={`faq-answer-${index}`}
-                  >
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white pr-4">
-                      {item.question}
-                    </h3>
-                    <motion.div
-                      animate={{ rotate: openItems.includes(index) ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="flex-shrink-0"
-                    >
-                      <ChevronDown className="w-5 h-5 text-slate-500" />
-                    </motion.div>
-                  </button>
-                  
-                  <AnimatePresence>
-                    {openItems.includes(index) && (
-                      <motion.div
-                        id={`faq-answer-${index}`}
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-6 pb-6 border-t border-slate-200 dark:border-slate-700">
-                          <p className="text-slate-600 dark:text-slate-300 leading-relaxed pt-4">
-                            {item.answer}
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+      <Section id="faq">
+        <SectionHeading
+          eyebrow="Dúvidas"
+          title="O que perguntam antes de contratar"
+          description="As respostas que damos por telefone todos os dias — para morador com problema agora e para quem decide por um prédio inteiro."
+        />
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="text-center mt-12"
-          >
-            <p className="text-slate-600 dark:text-slate-300 mb-6">
-              Não encontrou a resposta que procurava?
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="tel:+5511980639525"
-                className="inline-flex items-center px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors shadow-lg hover:shadow-xl"
-              >
-                📞 (11) 98063-9525
-              </a>
-              <a
-                href="https://wa.me/5511980639525"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-lg hover:shadow-xl"
-              >
-                💬 WhatsApp
-              </a>
-            </div>
-          </motion.div>
+        <div className="mx-auto max-w-3xl border-t border-hairline">
+          {faqData.map((item, index) => (
+            <Reveal key={item.question} delay={Math.min(index, 5)}>
+              <details className="group border-b border-hairline">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-left transition-colors duration-200 ease-out hover:text-raio-600 dark:hover:text-raio-400 [&::-webkit-details-marker]:hidden">
+                  <h3 className="text-base font-semibold tracking-tight text-content sm:text-lg">
+                    {item.question}
+                  </h3>
+                  <ChevronDown
+                    className="h-5 w-5 shrink-0 text-content-subtle transition-transform duration-300 ease-out group-open:rotate-180"
+                    aria-hidden
+                  />
+                </summary>
+                <p className="max-w-measure pb-6 pr-9 text-content-muted">{item.answer}</p>
+              </details>
+            </Reveal>
+          ))}
         </div>
-      </section>
+
+        <Reveal className="mx-auto mt-12 max-w-3xl">
+          <div className="flex flex-col gap-5 rounded-2xl border border-hairline bg-surface p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+            <div>
+              <p className="font-semibold tracking-tight text-content">
+                Sua dúvida não está aqui?
+              </p>
+              <p className="mt-1 text-content-muted">
+                Ligue ou mande mensagem. Quem responde é a operação, não um robô.
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+              <Button href={site.phone.tel} variant="secondary">
+                {site.phone.display}
+              </Button>
+              <Button
+                href={site.whatsapp.with(waMessages.orcamento)}
+                external
+                variant="outline"
+              >
+                WhatsApp
+              </Button>
+            </div>
+          </div>
+        </Reveal>
+      </Section>
     </>
   )
-} 
+}

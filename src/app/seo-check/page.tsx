@@ -16,7 +16,14 @@ import { Card } from "@/components/ui/Card";
 export const metadata: Metadata = {
   title: "Verificação de SEO - Raio Desentupidora",
   description: "Página de verificação das implementações de SEO do site da Raio Desentupidora. Análise completa de otimização para mecanismos de busca.",
-  robots: "noindex, nofollow"
+  /* Ferramenta interna. Fora do índice e sem repassar link equity — um decisor
+     que caísse aqui veria diagnóstico técnico, não a oferta da empresa.
+     Também está no `Disallow` de `src/app/robots.ts`. */
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
 };
 
 const seoFeatures = [
