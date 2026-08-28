@@ -1,6 +1,6 @@
 // Service Worker for Raio Desentupidora - Advanced Caching Strategy
-const CACHE_NAME = 'raio-desentupidora-v2.0.0'
-const STATIC_CACHE = 'static-v2'
+const CACHE_NAME = 'raio-desentupidora-v3.0.0'
+const STATIC_CACHE = 'static-v3'
 const DYNAMIC_CACHE = 'dynamic-v2'
 const IMAGE_CACHE = 'images-v2'
 
