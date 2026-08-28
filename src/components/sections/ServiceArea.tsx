@@ -1,231 +1,174 @@
-"use client"
+import { MapPin } from 'lucide-react'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/Card'
+import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { motion } from 'framer-motion'
-import { MapPin, Navigation, Clock, Phone } from 'lucide-react'
+import { Section, SectionHeading } from '@/components/ui/Section'
+import Reveal from '@/components/ui/Reveal'
+import { site, waMessages } from '@/lib/site'
 
-const cities = [
-  'Guarulhos', 'São Paulo', 'Arujá', 'Mairiporã', 'Caieiras', 'Franco da Rocha',
-  'Mogi das Cruzes', 'Suzano', 'Ferraz de Vasconcelos', 'Poá', 'Itaquaquecetuba',
-  'Santa Isabel', 'Nazaré Paulista', 'Atibaia', 'Bom Jesus dos Perdões',
-  'Igaratá', 'Piracaia', 'Joanópolis', 'Vargem', 'Tuiuti'
-]
+/* TODO: confirmar com o cliente — endereço da base operacional e a lista de bairros de
+   Guarulhos / zonas de São Paulo. Bairros vieram do site anterior e das páginas locais já
+   publicadas; se algum não for atendido, remover antes de indexar. */
 
-const regions = [
+interface Coverage {
+  /** Título indexável da região. */
+  name: string
+  /** Frase real sobre como a região é atendida — não repetir "atendimento rápido". */
+  note: string
+  places: string[]
+}
+
+const coverage: Coverage[] = [
   {
-    name: 'Zona Norte',
-    cities: ['Guarulhos', 'Arujá', 'Mairiporã', 'Caieiras', 'Franco da Rocha'],
-    description: 'Atendimento prioritário com equipes especializadas'
+    name: "Guarulhos e bairros",
+    note:
+      "Base operacional da empresa. É a região com o menor deslocamento e onde os atendimentos noturnos e de fim de semana saem primeiro.",
+    places: [
+      "Parque Continental",
+      "Vila Galvão",
+      "Bom Clima",
+      "Picanço",
+      "Jardim São Paulo",
+      "Taboão",
+      "Bonsucesso",
+      "Cumbica",
+      "Vila Augusta",
+      "Pimentas",
+    ],
   },
   {
-    name: 'Zona Leste',
-    cities: ['Mogi das Cruzes', 'Suzano', 'Ferraz de Vasconcelos', 'Poá', 'Itaquaquecetuba'],
-    description: 'Cobertura completa com resposta rápida'
+    name: "São Paulo — Zona Norte",
+    note:
+      "Atendimento residencial e de condomínio na faixa entre a Marginal Tietê e a Serra da Cantareira.",
+    places: ["Santana", "Tucuruvi", "Vila Maria", "Casa Verde", "Jaçanã", "Vila Guilherme"],
   },
   {
-    name: 'Grande São Paulo',
-    cities: ['Santa Isabel', 'Nazaré Paulista', 'Atibaia', 'Bom Jesus dos Perdões'],
-    description: 'Atendimento em toda a região metropolitana'
-  }
+    name: "São Paulo — Zona Leste",
+    note:
+      "Cobertura para imóveis residenciais, comércio de rua e cozinhas industriais da região.",
+    places: ["Penha", "Tatuapé", "Itaquera", "São Miguel Paulista", "Vila Matilde", "Ermelino Matarazzo"],
+  },
+  {
+    name: "Vetor norte metropolitano",
+    note:
+      "Cidades vizinhas a Guarulhos, atendidas com a mesma equipe e o mesmo padrão de orçamento fechado.",
+    places: ["Arujá", "Mairiporã", "Caieiras", "Franco da Rocha", "Santa Isabel"],
+  },
+  {
+    name: "Alto Tietê",
+    note:
+      "Região leste metropolitana. Para fossa e sucção, o atendimento costuma ser agendado por causa do porte do equipamento.",
+    places: ["Mogi das Cruzes", "Suzano", "Ferraz de Vasconcelos", "Poá", "Itaquaquecetuba"],
+  },
+  {
+    name: "Bragantina e Serra",
+    note:
+      "Atendimento mediante consulta de agenda, com prioridade para limpeza de reservatório e limpa fossa programados.",
+    places: [
+      "Atibaia",
+      "Bom Jesus dos Perdões",
+      "Nazaré Paulista",
+      "Igaratá",
+      "Piracaia",
+      "Joanópolis",
+      "Vargem",
+      "Tuiuti",
+    ],
+  },
 ]
 
 export default function ServiceArea() {
   return (
-    <section id="area-atuacao" className="py-20 bg-gradient-to-br from-blue-50 to-white dark:from-slate-800 dark:to-slate-900">
-      <div className="container mx-auto px-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
-            Área de Atuação
-          </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Atendemos toda a Grande São Paulo com equipes especializadas e 
-            equipamentos modernos para resolver seu problema rapidamente
-          </p>
-        </motion.div>
+    <Section id="area-atuacao">
+      <SectionHeading
+        eyebrow="Cobertura"
+        title="Onde a Raio Desentupidora atende"
+        description="Guarulhos, São Paulo capital e cidades da Grande São Paulo. A lista abaixo é a área em que operamos de fato — não é uma promessa de mapa."
+        align="center"
+      />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* Map Section */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Card variant="elevated" className="h-full">
-              <CardHeader>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 bg-sky-100 dark:bg-sky-900 rounded-lg">
-                    <MapPin className="w-6 h-6 text-sky-600 dark:text-sky-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-                      Localização
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-300">
-                      Cobertura em toda a região
-                    </p>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="relative bg-slate-100 dark:bg-slate-800 rounded-lg p-8 mb-6">
-                  {/* Placeholder for map - in real implementation, use Google Maps or similar */}
-                  <div className="text-center">
-                    <MapPin className="w-16 h-16 text-sky-500 mx-auto mb-4" />
-                    <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-                      Sede Principal
-                    </h4>
-                    <p className="text-slate-600 dark:text-slate-300">
-                      Rua Nobel Almeida Kuke, 485<br />
-                      Guarulhos - SP, 07084-210
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3 p-4 bg-sky-50 dark:bg-sky-900/20 rounded-lg">
-                    <Navigation className="w-5 h-5 text-sky-600 dark:text-sky-400" />
-                    <div>
-                      <p className="font-semibold text-slate-900 dark:text-white">Raio de Atendimento</p>
-                      <p className="text-sm text-slate-600 dark:text-slate-300">50km da sede</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <Clock className="w-5 h-5 text-green-600 dark:text-green-400" />
-                    <div>
-                      <p className="font-semibold text-slate-900 dark:text-white">Tempo Médio</p>
-                      <p className="text-sm text-slate-600 dark:text-slate-300">30 minutos</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Cities List */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <Card variant="elevated" className="h-full">
-              <CardHeader>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
-                  Cidades Atendidas
-                </h3>
-                <p className="text-slate-600 dark:text-slate-300">
-                  Atendimento 24h em todas as cidades listadas
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-6">
-                  {cities.map((city, index) => (
-                    <motion.div
-                      key={city}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                      className="bg-slate-50 dark:bg-slate-800 px-3 py-2 rounded-lg text-center"
-                    >
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                        {city}
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
-                
-                <div className="p-4 bg-sky-50 dark:bg-sky-900/20 rounded-lg">
-                  <p className="text-sm text-slate-600 dark:text-slate-300 mb-2">
-                    <strong>Não encontrou sua cidade?</strong>
-                  </p>
-                  <p className="text-sm text-slate-600 dark:text-slate-300">
-                    Entre em contato conosco! Atendemos outras regiões mediante consulta.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-
-        {/* Regions Cards */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mb-16"
-        >
-          <h3 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-12">
-            Regiões Especializadas
-          </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {regions.map((region, index) => (
-              <motion.div
-                key={region.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card variant="glass" hover className="p-6 text-center">
-                  <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
-                    {region.name}
-                  </h4>
-                  
-                  <p className="text-slate-600 dark:text-slate-300 mb-6">
-                    {region.description}
-                  </p>
-                  
-                  <div className="space-y-2">
-                    {region.cities.map((city, i) => (
-                      <div key={i} className="flex items-center justify-center gap-2">
-                        <MapPin className="w-3 h-3 text-sky-500" />
-                        <span className="text-sm text-slate-600 dark:text-slate-300">
-                          {city}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* CTA Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center"
-        >
-          <Card variant="elevated" className="bg-gradient-to-r from-sky-500 to-blue-600 text-white p-12">
-            <h3 className="text-3xl md:text-4xl font-bold mb-6">
-              Atendimento Rápido em Sua Região
-            </h3>
-            <p className="text-xl text-sky-100 mb-8 max-w-2xl mx-auto">
-              Equipes estrategicamente posicionadas para atender sua emergência 
-              no menor tempo possível
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="secondary" size="lg" className="shadow-lg">
-                <Phone className="w-5 h-5 mr-2" />
-                <a href="tel:+5511980639525">
-                  Ligar Agora: (11) 98063-9525
-                </a>
-              </Button>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-sky-600">
-                <MapPin className="w-5 h-5 mr-2" />
-                Consultar Atendimento
-              </Button>
+      {/* Compromisso operacional — texto único vindo de site.commitments */}
+      <Reveal>
+        <dl className="grid grid-cols-2 gap-x-6 gap-y-6 rounded-2xl border border-hairline bg-elevated p-6 sm:p-8 lg:grid-cols-4">
+          {site.commitments.map((commitment) => (
+            <div key={commitment.label}>
+              <dt className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-content-subtle">
+                {commitment.label}
+              </dt>
+              <dd className="nums mt-1.5 text-xl font-semibold text-content">{commitment.value}</dd>
+              <dd className="mt-1 text-xs leading-relaxed text-content-subtle">
+                {commitment.detail}
+              </dd>
             </div>
-          </Card>
-        </motion.div>
+          ))}
+        </dl>
+      </Reveal>
+
+      {/* Regiões — headings reais e texto indexável, não só chips */}
+      <div className="mt-12 sm:mt-16">
+        <ul className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {coverage.map((region, i) => (
+            <Reveal as="li" key={region.name} delay={i % 3} className="flex">
+              <Card className="flex h-full w-full flex-col p-6 sm:p-7">
+                <div className="flex items-start gap-3">
+                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-aqua-50 dark:bg-aqua-950/40">
+                    <MapPin aria-hidden className="h-4 w-4 text-aqua-600 dark:text-aqua-400" />
+                  </span>
+                  <h3 className="mt-1 text-base font-semibold text-content">{region.name}</h3>
+                </div>
+
+                <p className="mt-4 text-sm leading-relaxed text-content-muted">{region.note}</p>
+
+                <ul className="mt-5 flex flex-wrap gap-x-2 gap-y-1.5 border-t border-hairline pt-4 text-sm text-content-muted">
+                  {region.places.map((place, index) => (
+                    <li key={place} className="flex items-center gap-2">
+                      <span>{place}</span>
+                      {index < region.places.length - 1 && (
+                        <span aria-hidden className="text-content-subtle">
+                          ·
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </Reveal>
+          ))}
+        </ul>
       </div>
-    </section>
+
+      {/* Base operacional + CTA */}
+      <Reveal className="mt-12 sm:mt-16">
+        <div className="grid grid-cols-1 gap-8 rounded-2xl border border-hairline bg-surface p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-12 lg:p-10">
+          <div>
+            <h3 className="text-xl font-semibold text-content">Não encontrou seu bairro?</h3>
+            <p className="mt-3 max-w-measure text-sm leading-relaxed text-content-muted">
+              A lista cobre as regiões de rotina. Fora delas, atendemos mediante consulta de
+              agenda — principalmente limpeza de reservatório e limpa fossa, que são
+              programados. Diga o endereço e o problema, e respondemos se conseguimos ir e em
+              quanto tempo.
+            </p>
+            <address className="mt-5 border-t border-hairline pt-4 text-sm not-italic leading-relaxed text-content-subtle">
+              Base operacional: Rua Nobel Almeida Kuke, 485 — {site.city}/SP, 07084-210
+            </address>
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row lg:shrink-0 lg:flex-col">
+            <Button
+              href={site.whatsapp.with(waMessages.orcamento)}
+              external
+              variant="secondary"
+              size="md"
+              className="lg:w-full"
+            >
+              Consultar meu endereço
+            </Button>
+            <Button href={site.phone.tel} variant="outline" size="md" className="nums lg:w-full">
+              {site.phone.display}
+            </Button>
+          </div>
+        </div>
+      </Reveal>
+    </Section>
   )
-} 
+}

@@ -1,64 +1,59 @@
-"use client"
+'use client'
 
 import { useEffect } from 'react'
 
+/**
+ * Registra o service worker (`public/sw.js`) — e nada mais.
+ *
+ * O que este arquivo fazia antes, e por que saiu:
+ *
+ *  - `img:not([loading])` → `loading="lazy"` em TODAS as imagens. Rodava depois
+ *    da hidratação, quando o navegador já tinha iniciado (ou concluído) o
+ *    download — inútil no melhor caso. No pior, marcava a imagem do hero como
+ *    lazy e piorava o LCP. `next/image` já define loading/decoding corretos.
+ *  - `<link rel="preload" href="/favicon.ico">` injetado via DOM. O favicon já
+ *    é buscado pelo navegador sem preload, e o layout já tinha o mesmo link no
+ *    <head>. Resultado: fetch duplicado + aviso de "preload não utilizado".
+ *  - `console.log` do registro do SW em produção.
+ *
+ * O registro do SW ficou, mas fora do caminho crítico: depois do `load` e em
+ * tempo ocioso. Antes competia com o carregamento da própria página.
+ */
 export default function PerformanceOptimizer() {
   useEffect(() => {
-    // Simple performance optimizations
-    const optimizePerformance = () => {
-      try {
-        // 1. Optimize images with lazy loading
-        const images = document.querySelectorAll('img:not([loading])')
-        images.forEach(img => {
-          const imgElement = img as HTMLImageElement
-          imgElement.setAttribute('loading', 'lazy')
-          imgElement.setAttribute('decoding', 'async')
-        })
+    if (process.env.NODE_ENV !== 'production') return
+    if (!('serviceWorker' in navigator)) return
 
-        // 2. Register service worker for caching
-        if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-          navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-              console.log('SW registered: ', registration)
-            })
-            .catch(registrationError => {
-              console.log('SW registration failed: ', registrationError)
-            })
-        }
+    let cancelled = false
 
-        // 3. Preload critical resources
-        const criticalResources = [
-          { href: '/favicon.ico', as: 'image', type: 'image/x-icon' },
-        ]
+    const register = () => {
+      if (cancelled) return
+      navigator.serviceWorker.register('/sw.js').catch(() => {
+        // Sem SW o site funciona igual; falha aqui não é erro do usuário.
+      })
+    }
 
-        criticalResources.forEach(resource => {
-          const existingLink = document.querySelector(`link[href="${resource.href}"]`)
-          if (!existingLink) {
-            const link = document.createElement('link')
-            link.rel = 'preload'
-            link.href = resource.href
-            link.as = resource.as
-            if (resource.type) link.type = resource.type
-            document.head.appendChild(link)
-          }
-        })
-      } catch (error) {
-        console.warn('Performance optimization error:', error)
+    const whenIdle = () => {
+      if (cancelled) return
+      // Safari < 16.4 não tem requestIdleCallback; daí o fallback por timeout.
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(register, { timeout: 5000 })
+      } else {
+        window.setTimeout(register, 2000)
       }
     }
 
-    // Run optimizations after DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', optimizePerformance)
+    if (document.readyState === 'complete') {
+      whenIdle()
     } else {
-      setTimeout(optimizePerformance, 100)
+      window.addEventListener('load', whenIdle, { once: true, passive: true })
     }
 
-    // Cleanup
     return () => {
-      document.removeEventListener('DOMContentLoaded', optimizePerformance)
+      cancelled = true
+      window.removeEventListener('load', whenIdle)
     }
   }, [])
 
   return null
-} 
+}

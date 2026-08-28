@@ -1,15 +1,16 @@
 {
-  "name": "Raio Desentupidora - Serviços 24h",
+  "name": "Raio Desentupidora — Desentupimento 24h",
   "short_name": "Raio Desentupidora",
-  "description": "Desentupidora 24h em Guarulhos e região. Atendimento emergencial, limpeza de caixa d'água, garantia nos serviços.",
+  "description": "Desentupimento e saneamento predial 24h em Guarulhos e Grande São Paulo. Atendimento residencial e corporativo, orçamento fechado antes de iniciar e garantia por escrito.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0284c7",
+  "background_color": "#0a1424",
+  "theme_color": "#0a1424",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "pt-BR",
-  "categories": ["utilities", "business"],
+  "dir": "ltr",
+  "categories": ["business", "utilities"],
   "icons": [
     {
       "src": "/favicon.ico",
@@ -17,16 +18,10 @@
       "type": "image/x-icon"
     },
     {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable any"
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
       "src": "/apple-touch-icon.png",
@@ -34,76 +29,25 @@
       "type": "image/png"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshot-mobile.png",
-      "sizes": "320x640",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/screenshot-desktop.png", 
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide"
-    }
-  ],
   "shortcuts": [
     {
       "name": "Emergência 24h",
       "short_name": "Emergência",
       "description": "Contato direto para emergências",
-      "url": "/contato?emergency=true",
-      "icons": [
-        {
-          "src": "/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "url": "/contato"
     },
     {
-      "name": "Nossos Serviços",
+      "name": "Serviços",
       "short_name": "Serviços",
-      "description": "Veja todos os nossos serviços",
-      "url": "/nossosservicos",
-      "icons": [
-        {
-          "src": "/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "description": "Todos os serviços de desentupimento e saneamento predial",
+      "url": "/nossosservicos"
     },
     {
-      "name": "WhatsApp",
-      "short_name": "WhatsApp",
-      "description": "Falar no WhatsApp",
-      "url": "https://wa.me/5511980639525",
-      "icons": [
-        {
-          "src": "/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "name": "Condomínios e empresas",
+      "short_name": "Empresas",
+      "description": "Contrato de manutenção preventiva e atendimento programado",
+      "url": "/empresas"
     }
   ],
-  "share_target": {
-    "action": "/contato",
-    "method": "GET",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
-  },
-  "prefer_related_applications": false,
-  "related_applications": [],
-  "protocol_handlers": [
-    {
-      "protocol": "tel",
-      "url": "tel:+5511980639525"
-    }
-  ],
-  "edge_side_panel": {
-    "preferred_width": 400
-  }
-} 
+  "prefer_related_applications": false
+}

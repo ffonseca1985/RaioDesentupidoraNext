@@ -3,58 +3,39 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: "export",
-  
-  // Performance optimizations
   poweredByHeader: false,
-  
-  // Image optimization
-  images: {
-    domains: ['d36p6ty9wanxdj.cloudfront.net'],
-    unoptimized: true,
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 31536000, // 1 year
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },
-  
-  // Experimental features for performance
-  experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
-  },
-  
-  // Webpack optimizations
-  webpack: (config, { dev, isServer }) => {
-    // Production optimizations
-    if (!dev && !isServer) {
-      config.optimization = {
-        ...config.optimization,
-        sideEffects: false,
-        usedExports: true,
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              chunks: 'all',
-            },
-            common: {
-              name: 'common',
-              minChunks: 2,
-              chunks: 'all',
-              enforce: true,
-            },
-          },
-        },
-      };
-    }
-    
-    return config;
-  },
-  
 
+  images: {
+    // Export estático: não há otimizador de imagem em runtime. Com
+    // `unoptimized: true` todo o resto da config de imagem (deviceSizes,
+    // imageSizes, formats, minimumCacheTTL, contentSecurityPolicy) é ignorado
+    // pelo Next — era ruído. `domains` também estava deprecado no Next 15.
+    unoptimized: true,
+    remotePatterns: [
+      { protocol: "https", hostname: "d36p6ty9wanxdj.cloudfront.net" },
+    ],
+  },
+
+  experimental: {
+    // Reescreve os barrel imports destes pacotes para imports diretos,
+    // habilitando tree-shaking real de ícones e de motion.
+    optimizePackageImports: ["lucide-react", "framer-motion"],
+  },
+
+  // Sem override de webpack de propósito.
+  //
+  // A config anterior forçava `splitChunks.cacheGroups.vendor` com
+  // `test: /node_modules/` e `name: 'vendors'`, jogando TODO node_modules num
+  // único chunk carregado em todas as rotas — era essa a origem dos ~257 kB de
+  // JS compartilhado. O split padrão do Next 15 separa framework / libs
+  // grandes / commons e permite que uma dependência usada em uma rota só
+  // (framer-motion, por exemplo) fique num chunk daquela rota.
+  //
+  // Também havia `optimization.sideEffects = false` global, que afirma para o
+  // webpack que NENHUM módulo do grafo tem efeito colateral. É uma mentira
+  // perigosa: autoriza descartar imports de CSS e polyfills que existem só pelo
+  // efeito. O Next já define `sideEffects` e `usedExports` corretamente por
+  // pacote a partir do `package.json` de cada um.
 };
 
 export default nextConfig;

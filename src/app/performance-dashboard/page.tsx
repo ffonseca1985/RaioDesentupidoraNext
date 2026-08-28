@@ -16,7 +16,14 @@ import { Card } from "@/components/ui/Card";
 export const metadata: Metadata = {
   title: "Performance Dashboard - Raio Desentupidora",
   description: "Dashboard de monitoramento de performance e otimizações implementadas no site da Raio Desentupidora.",
-  robots: "noindex, nofollow"
+  /* Ferramenta interna. Fora do índice e sem repassar link equity — um decisor
+     que caísse aqui veria diagnóstico técnico, não a oferta da empresa.
+     Também está no `Disallow` de `src/app/robots.ts`. */
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
 };
 
 const performanceMetrics = [

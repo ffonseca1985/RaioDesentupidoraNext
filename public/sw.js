@@ -1,14 +1,15 @@
 // Service Worker for Raio Desentupidora - Advanced Caching Strategy
-const CACHE_NAME = 'raio-desentupidora-v1.0.0'
-const STATIC_CACHE = 'static-v1'
-const DYNAMIC_CACHE = 'dynamic-v1'
-const IMAGE_CACHE = 'images-v1'
+const CACHE_NAME = 'raio-desentupidora-v2.0.0'
+const STATIC_CACHE = 'static-v2'
+const DYNAMIC_CACHE = 'dynamic-v2'
+const IMAGE_CACHE = 'images-v2'
 
 // Critical resources to cache immediately
 const CRITICAL_RESOURCES = [
   '/',
-  '/contato',
   '/nossosservicos',
+  '/empresas',
+  '/contato',
   '/quemsomos',
   '/favicon.ico',
   '/manifest.json',
@@ -23,11 +24,9 @@ const STATIC_ASSETS = [
   '/manifest.json'
 ]
 
-// External resources to cache
-const EXTERNAL_RESOURCES = [
-  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
-]
+// Nenhum recurso externo: as fontes são auto-hospedadas pelo next/font e o
+// Font Awesome foi removido. Um precache de URL morta derruba o install inteiro.
+const EXTERNAL_RESOURCES = []
 
 // Install event - cache critical resources
 self.addEventListener('install', event => {

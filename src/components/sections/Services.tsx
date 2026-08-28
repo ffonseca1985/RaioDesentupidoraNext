@@ -1,233 +1,323 @@
-"use client"
-
-import { Card, CardContent, CardHeader } from '@/components/ui/Card'
-import { Button } from '@/components/ui/Button'
-import { motion } from 'framer-motion'
-import { 
-  Wrench, 
-  Droplets, 
-  Zap, 
-  Clock, 
-  Shield, 
+import type { LucideIcon } from 'lucide-react'
+import {
+  Waves,
+  Droplets,
+  ShowerHead,
+  Container,
+  Droplet,
   Truck,
   Home,
-  Building,
+  Building2,
   Factory,
-  CheckCircle,
-  ArrowRight
 } from 'lucide-react'
-import Link from 'next/link'
 
-const services = [
+import { Card } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
+import { Section, SectionHeading } from '@/components/ui/Section'
+import Reveal from '@/components/ui/Reveal'
+import { site, waMessages } from '@/lib/site'
+
+/* TODO: confirmar com o cliente — método, equipamentos e itens listados em "Incluído"
+   descrevem o padrão de execução declarado pela empresa. Emissão de laudo de limpeza de
+   reservatório e comprovante de destinação de resíduo precisam de confirmação documental. */
+
+interface ServiceItem {
+  icon: LucideIcon
+  title: string
+  /** O que o cliente percebe antes de ligar. */
+  symptom: string
+  /** Como o serviço é executado — o que diferencia de quem só "joga produto". */
+  method: string
+  /** O que está incluído no preço fechado. */
+  includes: string[]
+}
+
+const services: ServiceItem[] = [
   {
-    icon: Wrench,
-    title: "Desentupimento de Esgoto",
-    description: "Desentupimento completo de redes de esgoto residenciais, comerciais e industriais com equipamentos de alta pressão.",
-    features: ["Equipamentos modernos", "Garantia do serviço", "Limpeza após o trabalho"]
+    icon: Waves,
+    title: "Esgoto — rede predial e coletiva",
+    symptom:
+      "Refluxo nos ralos do térreo, odor persistente na área de serviço ou mais de um ponto entupido ao mesmo tempo. Quando vários aparelhos param juntos, a obstrução está no ramal coletivo, não na louça.",
+    method:
+      "Inspeção das caixas de passagem e de gordura antes de abrir qualquer ponto. Hidrojateamento de alta pressão ou rotativa elétrica, escolhidos pelo diâmetro e pelo material da tubulação.",
+    includes: [
+      "Localização do trecho obstruído antes de iniciar",
+      "Teste de escoamento com o cliente presente",
+      "Garantia por escrito do trecho desobstruído",
+    ],
   },
   {
     icon: Droplets,
-    title: "Desentupimento de Pias",
-    description: "Serviço especializado em desentupimento de pias de cozinha, banheiro e lavanderia com técnicas avançadas.",
-    features: ["Sem quebra de pisos", "Materiais inclusos", "Atendimento rápido"]
+    title: "Pia e ramal de cozinha",
+    symptom:
+      "Água que desce devagar e volta, gorgolejo no sifão, cheiro de gordura. Quase sempre é gordura saturada no ramal horizontal, não na válvula.",
+    method:
+      "Rotativa flexível introduzida pelo próprio ramal, sem quebra de piso, parede ou bancada. Se a gordura já endureceu no trecho, hidrojateamento de bico reduzido.",
+    includes: [
+      "Sem quebra de piso, parede ou bancada",
+      "Retirada do resíduo removido do ramal",
+      "Orientação sobre a causa do entupimento",
+    ],
   },
   {
-    icon: Zap,
-    title: "Desentupimento de Vaso Sanitário",
-    description: "Desentupimento de vasos sanitários entupidos com soda cáustica, objetos ou papel em excesso.",
-    features: ["Técnicas especializadas", "Sem danos ao vaso", "Higienização completa"]
+    icon: ShowerHead,
+    title: "Vaso sanitário e ramal de banheiro",
+    symptom:
+      "Descarga que sobe, esvazia devagar ou não desce. Normalmente há objeto, papel compactado ou resíduo endurecido preso na curva do sifão da louça.",
+    method:
+      "Equipamento próprio para louça sanitária, sem alavancar a peça e sem soda cáustica — produto agressivo trinca a cerâmica e ataca a vedação do anel.",
+    includes: [
+      "Sem retirar o vaso, quando o acesso permite",
+      "Teste de descarga antes de encerrar",
+      "Higienização da área ao final do serviço",
+    ],
   },
   {
-    icon: Clock,
-    title: "Limpeza de Caixa D'água",
-    description: "Limpeza e desinfecção completa de caixas d'água e reservatórios seguindo normas sanitárias.",
-    features: ["Certificado sanitário", "Produtos apropriados", "Laudo técnico"]
+    icon: Container,
+    title: "Ralos, calhas e caixa de gordura",
+    symptom:
+      "Poça parada no box, ralo de garagem transbordando em dia de chuva, caixa de gordura acima do nível normal e odor no quintal.",
+    method:
+      "Limpeza mecânica do ralo e do ramal, sucção e raspagem da caixa de gordura, conferência da declividade e da vedação da tampa de inspeção.",
+    includes: [
+      "Retirada e destinação do resíduo",
+      "Verificação dos ramais ligados ao mesmo ponto",
+      "Periodicidade recomendada de limpeza",
+    ],
   },
   {
-    icon: Shield,
-    title: "Desentupimento de Ralos",
-    description: "Desentupimento de ralos de banheiro, cozinha, área de serviço e garagem com máxima eficiência.",
-    features: ["Diversos tipos de ralo", "Sem odores", "Prevenção de entupimentos"]
+    icon: Droplet,
+    title: "Limpeza de caixa d'água e reservatório",
+    symptom:
+      "Água com cor ou sabor alterados, sedimento no fundo, ou simplesmente o prazo semestral vencido — é a manutenção que a vigilância sanitária cobra do condomínio.",
+    method:
+      "Esvaziamento, remoção do sedimento, escovação sem abrasivo e desinfecção com solução clorada em concentração controlada, seguida de enxágue e descarte da primeira água.",
+    includes: [
+      "Certificado de limpeza para apresentação à vigilância",
+      "Verificação de tampa, extravasor e vedação",
+      "Registro fotográfico antes e depois",
+    ],
   },
   {
     icon: Truck,
-    title: "Limpa Fossa",
-    description: "Limpeza e esgotamento de fossas sépticas com caminhão limpa-fossa e equipamentos adequados.",
-    features: ["Caminhão especializado", "Descarte ecológico", "Atendimento programado"]
-  }
+    title: "Limpa fossa e sucção de resíduos",
+    symptom:
+      "Fossa transbordando, retorno nos ralos internos, mau cheiro constante no terreno. Em imóvel sem ligação na rede pública, é o sinal de que o volume saturou.",
+    method:
+      "Caminhão a vácuo dimensionado para o volume do reservatório, com sucção do lodo e lavagem interna. Pode ser emergencial ou entrar em calendário de esvaziamento.",
+    includes: [
+      "Destinação do resíduo em estação licenciada",
+      "Comprovante de coleta e destinação",
+      "Agenda preventiva quando o consumo é recorrente",
+    ],
+  },
 ]
 
-const serviceTypes = [
+interface SegmentItem {
+  icon: LucideIcon
+  title: string
+  description: string
+  points: string[]
+  cta: { label: string; href: string; external?: boolean }
+}
+
+const segments: SegmentItem[] = [
   {
     icon: Home,
     title: "Residencial",
-    description: "Atendimento especializado para casas e apartamentos",
-    features: ["Atendimento domiciliar", "Horário flexível", "Preços acessíveis"]
+    description:
+      "Casa ou apartamento com problema agora. A prioridade é chegar, diagnosticar e fechar preço antes de encostar na tubulação.",
+    points: [
+      "Orçamento fechado antes de iniciar",
+      "Atendimento 24h, inclusive feriados",
+      "Sem quebra desnecessária de piso ou parede",
+    ],
+    cta: {
+      label: "Pedir orçamento no WhatsApp",
+      href: site.whatsapp.with(waMessages.orcamento),
+      external: true,
+    },
   },
   {
-    icon: Building,
-    title: "Comercial",
-    description: "Soluções para empresas, lojas e escritórios",
-    features: ["Atendimento corporativo", "Contratos mensais", "Equipe especializada"]
+    icon: Building2,
+    title: "Condomínios e comércio",
+    description:
+      "Síndico, zelador e gestor predial precisam de previsibilidade: mesma equipe, relatório do que foi feito e nota fiscal.",
+    points: [
+      "Contrato de manutenção preventiva",
+      "Relatório técnico por atendimento",
+      "Nota fiscal e emissão para pessoa jurídica",
+    ],
+    cta: { label: "Ver atendimento para empresas", href: "/empresas" },
   },
   {
     icon: Factory,
     title: "Industrial",
-    description: "Serviços de grande porte para indústrias",
-    features: ["Equipamentos robustos", "Projetos customizados", "Manutenção preventiva"]
-  }
+    description:
+      "Galpão, indústria e cozinha de grande porte, onde parar a operação custa mais do que o serviço. Atendimento programado fora do turno.",
+    points: [
+      "Hidrojateamento de alto desempenho",
+      "Atendimento programado fora do horário produtivo",
+      "Registro documental para auditoria e conformidade",
+    ],
+    cta: { label: "Falar sobre contrato", href: "/empresas" },
+  },
 ]
 
-export default function Services() {
+const labelClass =
+  "text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-content-subtle"
+
+function Bullet() {
   return (
-    <section id="servicos" className="py-20 bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800">
-      <div className="container mx-auto px-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
-            Nossos Serviços
-          </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Oferecemos soluções completas em desentupimento com tecnologia de ponta, 
-            garantia e atendimento 24 horas em toda a Grande São Paulo
+    <span
+      aria-hidden
+      className="mt-[0.5rem] h-1 w-1 shrink-0 rounded-full bg-raio-500"
+    />
+  )
+}
+
+interface ServicesProps {
+  /**
+   * `section` (padrão) — bloco da home, sobre a faixa alternada.
+   * `page` — conteúdo principal de uma página de serviços; adiciona a faixa de contato final.
+   */
+  variant?: 'section' | 'page'
+}
+
+export default function Services({ variant = 'section' }: ServicesProps) {
+  const isPage = variant === 'page'
+
+  return (
+    <Section id="servicos" className={isPage ? undefined : "bg-surface"}>
+      <SectionHeading
+        eyebrow="Serviços"
+        title={
+          isPage
+            ? "Todos os serviços de desentupimento e saneamento predial"
+            : "O que fazemos, e como fazemos"
+        }
+        description="Desobstrução, limpeza de reservatório e sucção de resíduos em Guarulhos e na Grande São Paulo. Diagnóstico antes do orçamento, preço fechado antes da execução."
+        align="center"
+      />
+
+      <ul className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {services.map((service, i) => (
+          <Reveal as="li" key={service.title} delay={i % 3} className="flex">
+            <Card hover className="flex h-full w-full flex-col p-6 sm:p-7">
+              <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-aqua-50 dark:bg-aqua-950/40">
+                <service.icon aria-hidden className="h-5 w-5 text-aqua-600 dark:text-aqua-400" />
+              </span>
+
+              <h3 className="mt-5 text-lg font-semibold text-content">{service.title}</h3>
+
+              <p className="mt-3 text-sm leading-relaxed text-content-muted">{service.symptom}</p>
+
+              <div className="mt-5 border-t border-hairline pt-4">
+                <p className={labelClass}>Como resolvemos</p>
+                <p className="mt-2 text-sm leading-relaxed text-content-muted">{service.method}</p>
+              </div>
+
+              <div className="mt-5 border-t border-hairline pt-4">
+                <p className={labelClass}>Incluído</p>
+                <ul className="mt-2.5 space-y-2">
+                  {service.includes.map((item) => (
+                    <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-content-muted">
+                      <Bullet />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Card>
+          </Reveal>
+        ))}
+      </ul>
+
+      {/* ---- Segmentos atendidos ------------------------------------------------ */}
+      <div className="mt-20 sm:mt-24">
+        <Reveal className="mb-10 max-w-measure sm:mb-12">
+          <h3 className="text-display-sm text-content">Quem atendemos</h3>
+          <p className="mt-4 text-content-muted">
+            O mesmo serviço técnico, com rotas de contratação diferentes: emergência residencial
+            resolve por telefone; condomínio e indústria resolvem por contrato.
           </p>
-        </motion.div>
+        </Reveal>
 
-        {/* Main Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-          {services.map((service, index) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <Card variant="elevated" hover className="h-full">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="p-3 bg-sky-100 dark:bg-sky-900 rounded-lg">
-                      <service.icon className="w-6 h-6 text-sky-600 dark:text-sky-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
-                        {service.title}
-                      </h3>
-                      <p className="text-sky-600 dark:text-sky-400 font-medium">
-                        Orçamento personalizado
-                      </p>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
-                    {service.description}
-                  </p>
-                  
-                  <div className="space-y-2 mb-6">
-                    {service.features.map((feature, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                        <span className="text-sm text-slate-600 dark:text-slate-300">
-                          {feature}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+        <ul className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-3">
+          {segments.map((segment, i) => (
+            <Reveal as="li" key={segment.title} delay={i} className="flex">
+              <Card className="flex h-full w-full flex-col p-6 sm:p-7">
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-aqua-50 dark:bg-aqua-950/40">
+                  <segment.icon aria-hidden className="h-5 w-5 text-aqua-600 dark:text-aqua-400" />
+                </span>
 
-                  <Button variant="outline" className="w-full group">
-                    Solicitar Orçamento
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <h4 className="mt-5 text-lg font-semibold text-content">{segment.title}</h4>
+                <p className="mt-3 text-sm leading-relaxed text-content-muted">{segment.description}</p>
+
+                <ul className="mt-5 space-y-2 border-t border-hairline pt-4">
+                  {segment.points.map((point) => (
+                    <li key={point} className="flex gap-2.5 text-sm leading-relaxed text-content-muted">
+                      <Bullet />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-auto pt-6">
+                  <Button
+                    href={segment.cta.href}
+                    external={segment.cta.external}
+                    variant="outline"
+                    size="md"
+                    className="w-full"
+                  >
+                    {segment.cta.label}
                   </Button>
-                </CardContent>
+                </div>
               </Card>
-            </motion.div>
+            </Reveal>
           ))}
-        </div>
+        </ul>
 
-        {/* Service Types */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mb-16"
-        >
-          <h3 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-12">
-            Atendemos todos os segmentos
-          </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {serviceTypes.map((type, index) => (
-              <motion.div
-                key={type.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card variant="glass" className="text-center p-8">
-                  <div className="flex justify-center mb-6">
-                    <div className="p-4 bg-sky-100 dark:bg-sky-900 rounded-full">
-                      <type.icon className="w-8 h-8 text-sky-600 dark:text-sky-400" />
-                    </div>
-                  </div>
-                  
-                  <h4 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
-                    {type.title}
-                  </h4>
-                  
-                  <p className="text-slate-600 dark:text-slate-300 mb-6">
-                    {type.description}
-                  </p>
-                  
-                  <div className="space-y-2">
-                    {type.features.map((feature, i) => (
-                      <div key={i} className="flex items-center justify-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                        <span className="text-sm text-slate-600 dark:text-slate-300">
-                          {feature}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+        <Reveal className="mt-6">
+          <p className="text-sm text-content-muted">
+            Emergência residencial agora?{' '}
+            <a
+              href={site.phone.tel}
+              className="nums py-2 font-semibold text-raio-600 underline-offset-4 hover:underline dark:text-raio-400"
+            >
+              {site.phone.display}
+            </a>{' '}
+            — atendimento 24h, todos os dias.
+          </p>
+        </Reveal>
+      </div>
 
-        {/* CTA Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-center"
-        >
-          <div className="bg-gradient-to-r from-sky-500 to-blue-600 rounded-2xl p-12 text-white">
-            <h3 className="text-3xl md:text-4xl font-bold mb-6">
-              Emergência? Atendemos 24h!
-            </h3>
-            <p className="text-xl text-sky-100 mb-8 max-w-2xl mx-auto">
-              Não espere o problema se agravar. Nossa equipe está pronta para 
-              atender sua emergência a qualquer hora do dia ou da noite.
+      {/* ---- Faixa de contato: só nas páginas dedicadas, para não duplicar o CTA da home ---- */}
+      {isPage && (
+        <Reveal className="mt-20 sm:mt-24">
+          <div className="rounded-2xl border border-hairline bg-ink-950 p-8 sm:p-10 lg:p-12">
+            <h3 className="text-display-sm text-white">Precisa resolver hoje?</h3>
+            <p className="mt-4 max-w-measure text-white/65">
+              Atendimento 24h em Guarulhos e na Grande São Paulo. Orçamento sem custo, fechado
+              antes de iniciar o serviço, e garantia por escrito do que for executado.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="secondary" size="lg" className="shadow-lg">
-                <a href="tel:+5511980639525" className="flex items-center gap-2">
-                  Ligar Agora: (11) 98063-9525
-                </a>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button href={site.phone.tel} size="lg" className="nums">
+                Ligar {site.phone.display}
               </Button>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-sky-600">
-                <a href="https://wa.me/5511980639525" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  WhatsApp
-                </a>
+              <Button
+                href={site.whatsapp.with(waMessages.emergencia)}
+                external
+                variant="onDark"
+                size="lg"
+              >
+                Falar no WhatsApp
               </Button>
             </div>
           </div>
-        </motion.div>
-      </div>
-    </section>
+        </Reveal>
+      )}
+    </Section>
   )
-} 
+}

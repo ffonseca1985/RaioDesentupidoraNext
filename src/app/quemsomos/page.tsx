@@ -1,10 +1,23 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import QuemSomosClient from "@/components/sections/QuemSomosClient";
 
 export const metadata: Metadata = {
-  title: "Quem Somos - Raio Desentupidora",
-  description: "Conheça a história da Raio Desentupidora. Empresa especializada em desentupimento 24h com mais de 15 anos de experiência em São Paulo.",
-  keywords: ["raio desentupidora", "empresa desentupimento", "história empresa", "desentupidora guarulhos"],
+  title: "Quem somos",
+  description:
+    "A Raio Desentupidora atende Guarulhos e a Grande São Paulo em desentupimento e saneamento predial, 24h. Equipe própria, nota fiscal em todo serviço, orçamento fechado antes de iniciar e garantia por escrito.",
+  keywords: [
+    "raio desentupidora",
+    "empresa de desentupimento guarulhos",
+    "desentupidora com nota fiscal",
+    "desentupidora para condomínio",
+  ],
+  alternates: { canonical: "/quemsomos" },
+  openGraph: {
+    url: "/quemsomos",
+    title: "Quem somos | Raio Desentupidora",
+    description:
+      "Equipe própria, nota fiscal, orçamento fechado antes de iniciar e garantia por escrito, em Guarulhos e Grande São Paulo.",
+  },
 };
 
 export default function QuemSomos() {

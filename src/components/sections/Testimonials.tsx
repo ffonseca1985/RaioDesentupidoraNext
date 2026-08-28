@@ -1,153 +1,140 @@
-"use client"
+/* TODO: confirmar depoimentos reais com o cliente — nomes, cidades e serviços abaixo
+   vieram do site anterior e não têm origem verificável. Antes de publicar, trocar por
+   depoimentos com autorização de uso ou por avaliações públicas reais do perfil do Google. */
 
-import { Card, CardContent } from '@/components/ui/Card'
-import { motion } from 'framer-motion'
-import { Star, Quote } from 'lucide-react'
+import { Section, SectionHeading } from '@/components/ui/Section'
+import Reveal from '@/components/ui/Reveal'
+import { site } from '@/lib/site'
 
-const testimonials = [
+interface Testimonial {
+  id: number
+  name: string
+  /** Cidade/bairro informado pelo cliente. */
+  location: string
+  /** Serviço executado — dá contexto técnico à citação. */
+  service: string
+  text: string
+}
+
+/* Conteúdo textual preservado do site anterior. Nenhum cliente novo foi inventado. */
+const testimonials: Testimonial[] = [
   {
     id: 1,
     name: "Maria Silva",
     location: "Guarulhos, SP",
-    rating: 5,
-    text: "Serviço excelente! Chegaram rapidamente e resolveram o problema do meu banheiro em poucos minutos. Equipe muito profissional e educada.",
-    service: "Desentupimento de vaso sanitário"
+    service: "Desentupimento de vaso sanitário",
+    text:
+      "Serviço excelente! Chegaram rapidamente e resolveram o problema do meu banheiro em poucos minutos. Equipe muito profissional e educada.",
   },
   {
     id: 2,
     name: "João Santos",
     location: "São Paulo, SP",
-    rating: 5,
-    text: "Atendimento 24h realmente funciona! Tive uma emergência de madrugada e eles vieram imediatamente. Preço justo e serviço de qualidade.",
-    service: "Desentupimento de esgoto"
+    service: "Desentupimento de esgoto",
+    text:
+      "Atendimento 24h realmente funciona! Tive uma emergência de madrugada e eles vieram imediatamente. Preço justo e serviço de qualidade.",
   },
   {
     id: 3,
     name: "Ana Oliveira",
     location: "Arujá, SP",
-    rating: 5,
-    text: "Já é a terceira vez que utilizo os serviços da Raio Desentupidora. Sempre pontuais, eficientes e com preços honestos. Recomendo!",
-    service: "Limpeza de caixa d'água"
+    service: "Limpeza de caixa d'água",
+    text:
+      "Já é a terceira vez que utilizo os serviços da Raio Desentupidora. Sempre pontuais, eficientes e com preços honestos. Recomendo!",
   },
   {
     id: 4,
     name: "Carlos Pereira",
     location: "Mairiporã, SP",
-    rating: 5,
-    text: "Problema complexo na rede de esgoto do prédio foi resolvido com máxima eficiência. Profissionais capacitados e equipamentos modernos.",
-    service: "Desentupimento de rede coletiva"
+    service: "Desentupimento de rede coletiva",
+    text:
+      "Problema complexo na rede de esgoto do prédio foi resolvido com máxima eficiência. Profissionais capacitados e equipamentos modernos.",
   },
   {
     id: 5,
     name: "Fernanda Costa",
     location: "Caieiras, SP",
-    rating: 5,
-    text: "Atendimento impecável! Chegaram no horário marcado, explicaram o problema e resolveram rapidamente. Empresa de confiança!",
-    service: "Desentupimento de pia"
+    service: "Desentupimento de pia",
+    text:
+      "Atendimento impecável! Chegaram no horário marcado, explicaram o problema e resolveram rapidamente. Empresa de confiança!",
   },
   {
     id: 6,
     name: "Roberto Lima",
     location: "Franco da Rocha, SP",
-    rating: 5,
-    text: "Excelente custo-benefício! Serviço rápido, eficiente e com garantia. A equipe é muito profissional e deixa tudo limpo após o trabalho.",
-    service: "Desentupimento de ralo"
-  }
+    service: "Desentupimento de ralo",
+    text:
+      "Excelente custo-benefício! Serviço rápido, eficiente e com garantia. A equipe é muito profissional e deixa tudo limpo após o trabalho.",
+  },
 ]
-
-const StarRating = ({ rating }: { rating: number }) => {
-  return (
-    <div className="flex items-center gap-1">
-      {[...Array(5)].map((_, i) => (
-        <Star
-          key={i}
-          className={`w-4 h-4 ${
-            i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
-          }`}
-        />
-      ))}
-    </div>
-  )
-}
 
 export default function Testimonials() {
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800">
-      <div className="container mx-auto px-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
-            O que nossos clientes dizem
-          </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-            Mais de 10 mil clientes atendidos com excelência em toda a Grande São Paulo
+    <Section id="depoimentos" className="bg-surface">
+      <SectionHeading
+        eyebrow="Referências"
+        title="Quem já chamou"
+        description="Relatos de clientes atendidos em Guarulhos, São Paulo e cidades vizinhas, com o serviço executado em cada caso."
+        align="center"
+      />
+
+      <ul className="grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+        {testimonials.map((item, i) => (
+          <Reveal as="li" key={item.id} delay={i % 3} className="flex">
+            <figure className="flex h-full w-full flex-col">
+              <span
+                aria-hidden
+                className="select-none font-serif text-[3.5rem] leading-[0.7] text-raio-500/25"
+              >
+                {'“'}
+              </span>
+
+              <blockquote className="mt-3 text-[0.9375rem] font-medium leading-relaxed text-content sm:text-base">
+                {item.text}
+              </blockquote>
+
+              <figcaption className="mt-auto border-t border-hairline pt-5">
+                <span className="block text-sm font-semibold text-content">{item.name}</span>
+                <span className="mt-0.5 block text-sm text-content-muted">
+                  {item.location} · {item.service}
+                </span>
+              </figcaption>
+            </figure>
+          </Reveal>
+        ))}
+      </ul>
+
+      {/* Onde as avaliações podem ser conferidas. Texto neutro: sem nota média inventada,
+          sem contagem de avaliações e sem link antes de confirmar o perfil correto.
+          TODO: inserir o link do perfil do Google Meu Negócio quando o cliente confirmar. */}
+      <Reveal className="mt-14 sm:mt-16">
+        <div className="rounded-2xl border border-hairline bg-elevated p-6 sm:p-8">
+          <p className="max-w-measure text-sm leading-relaxed text-content-muted">
+            As avaliações públicas da {site.name} podem ser consultadas no perfil da empresa no
+            Google, buscando por{' '}
+            <span className="font-medium text-content">
+              &ldquo;{site.name} {site.city}&rdquo;
+            </span>
+            . Preferimos indicar a fonte a publicar uma nota média aqui.
           </p>
-        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={testimonial.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <Card variant="elevated" hover className="h-full">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <StarRating rating={testimonial.rating} />
-                    <Quote className="w-6 h-6 text-sky-500 opacity-50" />
-                  </div>
-                  
-                  <p className="text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
-                    "{testimonial.text}"
-                  </p>
-                  
-                  <div className="border-t border-slate-200 dark:border-slate-700 pt-4">
-                    <h4 className="font-semibold text-slate-900 dark:text-white">
-                      {testimonial.name}
-                    </h4>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">
-                      {testimonial.location}
-                    </p>
-                    <p className="text-sm text-sky-600 dark:text-sky-400 font-medium">
-                      {testimonial.service}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+          <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-hairline pt-6 sm:grid-cols-4">
+            {site.commitments.map((commitment) => (
+              <div key={commitment.label}>
+                <dt className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-content-subtle">
+                  {commitment.label}
+                </dt>
+                <dd className="nums mt-1.5 text-lg font-semibold text-content">
+                  {commitment.value}
+                </dd>
+                <dd className="mt-0.5 text-xs leading-relaxed text-content-subtle">
+                  {commitment.detail}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center mt-16"
-        >
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-lg max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-sky-600 dark:text-sky-400 mb-2">10K+</div>
-                <div className="text-slate-600 dark:text-slate-300">Clientes Atendidos</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-sky-600 dark:text-sky-400 mb-2">24h</div>
-                <div className="text-slate-600 dark:text-slate-300">Atendimento</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-sky-600 dark:text-sky-400 mb-2">5★</div>
-                <div className="text-slate-600 dark:text-slate-300">Avaliação Média</div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
+      </Reveal>
+    </Section>
   )
-} 
+}

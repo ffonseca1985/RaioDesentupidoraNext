@@ -1,54 +1,58 @@
 import { MetadataRoute } from 'next'
+import { site } from '@/lib/site'
 
 export const dynamic = 'force-static'
-export const revalidate = 86400 // 24 hours
 
+/**
+ * Só URLs canônicas entram aqui.
+ *
+ * Ficam de fora, de propósito:
+ *  - `/servicos.html` e `/desintupidora` — duplicatas legadas mantidas acessíveis,
+ *    mas com `alternates.canonical` apontando para a URL canônica. Sitemap não é
+ *    lugar de URL canonicalizada para outra.
+ *  - `/seo-check`, `/performance-dashboard` — ferramentas internas, `noindex`.
+ *  - `/chat-demo`, `/chat-admin` — removidas do projeto.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.raiodesentupidora.com.br'
-  const currentDate = new Date()
-  
+  const baseUrl = site.url
+  const lastModified = new Date()
+
   return [
     {
       url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: 'daily',
+      lastModified,
+      changeFrequency: 'weekly',
       priority: 1,
     },
     {
-      url: `${baseUrl}/contato`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
       url: `${baseUrl}/nossosservicos`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
+      lastModified,
+      changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/quemsomos`,
-      lastModified: currentDate,
+      url: `${baseUrl}/empresas`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/contato`,
+      lastModified,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/servicos.html`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/desintupidora`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
+      url: `${baseUrl}/desentupidora-guarulhos-parque-continental.html`,
+      lastModified,
+      changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/desentupidora-guarulhos-parque-continental.html`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
+      url: `${baseUrl}/quemsomos`,
+      lastModified,
+      changeFrequency: 'yearly',
+      priority: 0.5,
     },
   ]
-} 
+}

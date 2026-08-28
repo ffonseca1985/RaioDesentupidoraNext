@@ -1,52 +1,58 @@
-"use client";
+'use client'
 
-import React, { FC } from "react";
-
-// import whatApp from "../assets/images/whatsapp.png"
+import type { FC } from 'react'
+import { MessageCircle } from 'lucide-react'
+import { site, waMessages } from '@/lib/site'
+import { cn } from '@/lib/utils'
 
 interface BtnWhatsAppProps {
-    variant?: 'default' | 'small';
+  variant?: 'default' | 'small'
+  className?: string
 }
 
-export const BtnWhatsApp: FC<BtnWhatsAppProps> = ({ variant = 'default' }) => {
-    const baseStyles = "group relative overflow-hidden bg-green-500 text-white rounded-lg transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 hover:bg-green-600";
-    
-    const sizeStyles = variant === 'small' 
-        ? "px-4 py-2 text-sm"
-        : "px-8 py-3";
+/** Botão de WhatsApp inline. Sóbrio, sem gradiente nem sombra exagerada. */
+export const BtnWhatsApp: FC<BtnWhatsAppProps> = ({ variant = 'default', className }) => (
+  <a
+    href={site.whatsapp.with(waMessages.orcamento)}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Falar no WhatsApp"
+    className={cn(
+      'inline-flex items-center justify-center gap-2 rounded-xl font-semibold tracking-tight',
+      'bg-emerald-600 text-white transition-colors duration-200 ease-out hover:bg-emerald-700',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-raio-500 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas',
+      variant === 'small' ? 'h-11 px-4 text-sm' : 'h-[3.25rem] px-6 text-base',
+      className,
+    )}
+  >
+    <MessageCircle className="h-[1.125rem] w-[1.125rem] shrink-0" aria-hidden />
+    {variant === 'default' && 'WhatsApp'}
+  </a>
+)
 
-    return (
-        <a
-            href="https://wa.me/5511980639525"
-            className={`${baseStyles} ${sizeStyles} flex items-center justify-center gap-2`}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="WhatsApp"
-        >
-            <i className="fa-brands fa-whatsapp text-xl"></i>
-            {variant === 'default' && "WhatsApp"}
-        </a>
-    );
-};
-
-export const WhatsAppFlutuante: React.FC = () => {
-    return (
-        <a
-            href="https://wa.me/5511980639525"
-            className="fixed bottom-6 right-6 w-16 h-16 bg-green-500 
-                     rounded-full flex items-center justify-center 
-                     text-white text-2xl shadow-lg hover:bg-green-600 
-                     transition-all duration-300 transform hover:scale-105 
-                     hover:-translate-y-1 z-50 cursor-pointer"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="WhatsApp Flutuante"
-        >
-            <i className="fa-brands fa-whatsapp"></i>
-            
-            {/* Pulse Effect */}
-            <span className="absolute inline-flex h-full w-full rounded-full 
-                           bg-green-500 opacity-75 animate-ping"></span>
-        </a>
-    );
-};
+/**
+ * Bolha flutuante de WhatsApp.
+ *
+ * DESKTOP-ONLY (`hidden md:flex`): abaixo de `md` a `MobileActionBar` já
+ * ocupa o rodapé com Ligar + WhatsApp, e duas ações sobrepostas no mesmo
+ * canto competem entre si e cobrem conteúdo.
+ *
+ * Sem `animate-ping` e sem badge de "notificação" falsa — ruído visual que
+ * não combina com o público que assina contrato.
+ */
+export const WhatsAppFlutuante: FC = () => (
+  <a
+    href={site.whatsapp.with(waMessages.orcamento)}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Falar no WhatsApp"
+    className={cn(
+      'safe-area-bottom fixed bottom-6 right-6 z-40 hidden h-14 w-14 md:flex',
+      'items-center justify-center rounded-full bg-emerald-600 text-white shadow-e3',
+      'transition-colors duration-200 ease-out hover:bg-emerald-700',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-raio-500 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas',
+    )}
+  >
+    <MessageCircle className="h-6 w-6" aria-hidden />
+  </a>
+)

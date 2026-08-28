@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 
 type Theme = 'light' | 'dark'
 
@@ -8,39 +8,39 @@ interface ThemeContextType {
   theme: Theme
   toggleTheme: () => void
   setTheme: (theme: Theme) => void
+  /** False until the client has reconciled with the DOM — use it to avoid
+   *  rendering a toggle icon that would flip on hydration. */
+  mounted: boolean
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light')
+  // The pre-paint boot script has ALREADY put the right class on <html>.
+  // Start from that rather than guessing 'light' and causing a flash.
+  const [theme, setThemeState] = useState<Theme>('light')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // Check localStorage on mount
-    const savedTheme = localStorage.getItem('theme') as Theme
-    if (savedTheme) {
-      setTheme(savedTheme)
-    } else {
-      // Check system preference
-      const systemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-      setTheme(systemPreference)
-    }
+    const fromDom = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+    setThemeState(fromDom)
+    setMounted(true)
   }, [])
 
-  useEffect(() => {
-    // Update document class and localStorage
-    const root = window.document.documentElement
+  const setTheme = useCallback((next: Theme) => {
+    const root = document.documentElement
     root.classList.remove('light', 'dark')
-    root.classList.add(theme)
-    localStorage.setItem('theme', theme)
-  }, [theme])
+    root.classList.add(next)
+    try { localStorage.setItem('theme', next) } catch { /* private mode */ }
+    setThemeState(next)
+  }, [])
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light')
-  }
+  const toggleTheme = useCallback(() => {
+    setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark')
+  }, [setTheme])
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, mounted }}>
       {children}
     </ThemeContext.Provider>
   )
@@ -52,4 +52,4 @@ export function useTheme() {
     throw new Error('useTheme must be used within a ThemeProvider')
   }
   return context
-} 
+}
